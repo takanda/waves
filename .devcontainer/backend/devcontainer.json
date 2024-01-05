@@ -1,0 +1,21 @@
+{
+    "name": "DBoard backend",
+    "dockerComposeFile": [
+        "../../docker-compose.yml"
+    ],
+    "service": "backend",
+    "workspaceFolder": "/app",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "alexcvzz.vscode-sqlite",
+                "ms-python.vscode-pylance",
+                "ms-python.isort",
+                "ms-python.autopep8",
+                "christian-kohler.path-intellisense",
+                "alexcvzz.vscode-sqlite"
+            ]
+        }
+    }
+}
