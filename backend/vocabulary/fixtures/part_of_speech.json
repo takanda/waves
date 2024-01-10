@@ -1,0 +1,52 @@
+[
+    {
+      "model": "vocabulary.partofspeech",
+      "pk": 1,
+      "fields": { "ja_name": "可算名詞", "en_name": "countable noun" }
+    },
+    {
+      "model": "vocabulary.partofspeech",
+      "pk": 2,
+      "fields": { "ja_name": "不可算名詞", "en_name": "uncountable noun" }
+    },
+    {
+      "model": "vocabulary.partofspeech",
+      "pk": 3,
+      "fields": { "ja_name": "自動詞", "en_name": "intransitive verb" }
+    },
+    {
+      "model": "vocabulary.partofspeech",
+      "pk": 4,
+      "fields": { "ja_name": "他動詞", "en_name": "transitive verb" }
+    },
+    {
+      "model": "vocabulary.partofspeech",
+      "pk": 5,
+      "fields": { "ja_name": "形容詞", "en_name": "adjective" }
+    },
+    {
+      "model": "vocabulary.partofspeech",
+      "pk": 6,
+      "fields": { "ja_name": "副詞", "en_name": "adverb" }
+    },
+    {
+      "model": "vocabulary.partofspeech",
+      "pk": 7,
+      "fields": { "ja_name": "助動詞", "en_name": "auxiliary verb" }
+    },
+    {
+      "model": "vocabulary.partofspeech",
+      "pk": 8,
+      "fields": { "ja_name": "前置詞", "en_name": "preposition" }
+    },
+    {
+      "model": "vocabulary.partofspeech",
+      "pk": 9,
+      "fields": { "ja_name": "接続詞", "en_name": "conjunction" }
+    },
+    {
+      "model": "vocabulary.partofspeech",
+      "pk": 10,
+      "fields": { "ja_name": "不明", "en_name": "unknown" }
+    }
+  ]
