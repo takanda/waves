@@ -1,62 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
-// Define a type for the slice state
-interface PartsOfSpeechState {
+export interface PartsOfSpeechState {
   partsOfSpeech: {
-    ja: string;
-    en: string;
+    id: number,
+    ja_name: string;
+    en_name: string;
   }[];
   partsOfSpeechChecked: {
-    ja: string;
-    en: string;
+    id: number,
+    ja_name: string;
+    en_name: string;
   }[];
+  isLoading: boolean;
 }
 
-// Define the initial state using that type
 const initialState: PartsOfSpeechState = {
-  partsOfSpeech: [
-    {
-      ja: "加算名詞",
-      en: "countable noun",
-    },
-    {
-      ja: "不加算名詞",
-      en: "uncountable noun",
-    },
-    {
-      ja: "自動詞",
-      en: "intransitive verb",
-    },
-    {
-      ja: "他動詞",
-      en: "transitive verb",
-    },
-    {
-      ja: "形容詞",
-      en: "adjective",
-    },
-    {
-      ja: "副詞",
-      en: "adverb",
-    },
-    {
-      ja: "助動詞",
-      en: "auxiliary verb",
-    },
-    {
-      ja: "前置詞",
-      en: "preposition",
-    },
-    {
-      ja: "接続詞",
-      en: "conjunction",
-    },
-    {
-      ja: "フレーズ",
-      en: "phrase",
-    },
-  ],
+  partsOfSpeech: [],
   partsOfSpeechChecked: [],
+  isLoading: true,
 };
 
 const partsOfSpeech = createSlice({
@@ -68,13 +30,33 @@ const partsOfSpeech = createSlice({
     },
     removePartsOfSpeechChecked(state, { payload }) {
       state.partsOfSpeechChecked = state.partsOfSpeechChecked.filter(
-        (partOfSpeechChecked) => partOfSpeechChecked.ja !== payload.ja
+        (partOfSpeechChecked) => partOfSpeechChecked.id !== payload.id
       );
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(fetchAsyncPartOfSpeech.fulfilled, (state, { payload }) => {
+      state.partsOfSpeech = payload;
+      state.isLoading = false;
+    });
+  },
 });
 
-export const { addPartsOfSpeechChecked, removePartsOfSpeechChecked } =
+const fetchAsyncPartOfSpeech = createAsyncThunk(
+  "/api/vocabulary/part_of_speech",
+  async () => {
+    const response = await axios.get("/api/vocabulary/part_of_speech");
+    return response.data;
+  }
+);
+
+const { addPartsOfSpeechChecked, removePartsOfSpeechChecked } =
   partsOfSpeech.actions;
+
+export {
+  addPartsOfSpeechChecked,
+  removePartsOfSpeechChecked,
+  fetchAsyncPartOfSpeech,
+};
 
 export default partsOfSpeech.reducer;

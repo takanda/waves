@@ -1,17 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "./redux/store/hooks";
 import styles from "./App.module.css";
-import { addPartsOfSpeechChecked, removePartsOfSpeechChecked } from "./redux/store/modules/parts_of_speech";
+import { addPartsOfSpeechChecked, removePartsOfSpeechChecked, fetchAsyncPartOfSpeech } from "./redux/store/modules/parts_of_speech";
 
 
 const App = () => {
   const partsOfSpeech = useAppSelector((state) => state.partsOfSpeech.partsOfSpeech);
   const partsOfSpeechChecked = useAppSelector((state) => state.partsOfSpeech.partsOfSpeechChecked);
+  const isLoading = useAppSelector((state) => state.partsOfSpeech.isLoading);
   const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    dispatch(fetchAsyncPartOfSpeech())
+  }, [dispatch])
+
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>, partOfSpeech: {
-    ja: string;
-    en: string;
+    id: number
+    ja_name: string;
+    en_name: string;
   }) => {
     if (e.target.checked) {
       dispatch(addPartsOfSpeechChecked(partOfSpeech));
@@ -20,6 +26,9 @@ const App = () => {
     }
   }
 
+  if (isLoading) {
+    return <></>;
+  }
   return (
     <div className={styles.app}>
       <div className={styles.sidebar}>
@@ -36,10 +45,10 @@ const App = () => {
           <div className={styles.sidebarTitle}>
             品詞
           </div>
-          {partsOfSpeech.map((partOfSpeech, index) => (
-            <div className={styles.sidebarPartOfSpeech} key={index}>
-              <input id={`${partOfSpeech.en}-checkbox`} type="checkbox" aria-label={`${partOfSpeech.en}-checkbox`} onChange={(e) => handleCheckboxChange(e, partOfSpeech)} />
-              <label htmlFor={`${partOfSpeech.en}-checkbox`}>{partOfSpeech.ja}</label>
+          {partsOfSpeech.map(partOfSpeech => (
+            <div className={styles.sidebarPartOfSpeech} key={partOfSpeech.id}>
+              <input id={`${partOfSpeech.id}-checkbox`} type="checkbox" aria-label={`${partOfSpeech.id}-checkbox`} onChange={(e) => handleCheckboxChange(e, partOfSpeech)} />
+              <label htmlFor={`${partOfSpeech.id}-checkbox`}>{partOfSpeech.ja_name}</label>
             </div>
           ))}
         </div>
@@ -53,10 +62,10 @@ const App = () => {
             <input id="english-word-input" type="text" />
           </div>
 
-          {partsOfSpeechChecked.map((partsOfSpeechChecked, index) => (
-            <div className={styles.input} key={index}>
-              <label htmlFor={`${partsOfSpeechChecked.en}-input`}>{partsOfSpeechChecked.ja}</label>
-              <input id={`${partsOfSpeechChecked.en}-input`} type="text" />
+          {partsOfSpeechChecked.map(partOfSpeechChecked => (
+            <div className={styles.input} key={partOfSpeechChecked.id}>
+              <label htmlFor={`${partOfSpeechChecked.id}-input`}>{partOfSpeechChecked.ja_name}</label>
+              <input id={`${partOfSpeechChecked.id}-input`} type="text" />
             </div>
           ))}
 
