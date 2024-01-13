@@ -1,7 +1,7 @@
 from rest_framework import viewsets, generics, status
 from rest_framework.response import Response 
-from .models import Vocabulary
-from .serializers import VocabularySerializer
+from .models import Vocabulary, PartOfSpeech
+from .serializers import VocabularySerializer, PartOfSpeechSerializer
 
 
 class VocabularyModelViewSet(viewsets.ModelViewSet):
@@ -33,3 +33,9 @@ class BulkCreateVocabularyView(generics.CreateAPIView):
         if isinstance(kwargs.get("data", {}), list):
             kwargs["many"] = True
         return super().get_serializer(*args, **kwargs)
+
+
+class ListPartOfSpeechView(generics.ListAPIView):
+    queryset = PartOfSpeech.objects.all()
+    serializer_class = PartOfSpeechSerializer
+    

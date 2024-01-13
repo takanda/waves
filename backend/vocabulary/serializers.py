@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Vocabulary
+from .models import Vocabulary, PartOfSpeech
 
 
 class CreateVocabularyListSerializer(serializers.ListSerializer):
@@ -14,3 +14,8 @@ class VocabularySerializer(serializers.ModelSerializer):
         model = Vocabulary
         fields = "__all__"
         list_serializer_class = CreateVocabularyListSerializer
+
+class PartOfSpeechSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PartOfSpeech
+        fields = "__all__"

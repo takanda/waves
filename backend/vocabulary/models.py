@@ -4,9 +4,9 @@ from django.db import models, InternalError
 
 def get_default_part_of_speech():
     try: 
-        return PartOfSpeech.objects.get(en_name="unknown").pk
+        return PartOfSpeech.objects.get(en_name="others").pk
     except PartOfSpeech.DoesNotExist:
-        raise InternalError("There should be 'unknown' record before deleting a part of speech")
+        raise InternalError("There should be 'others' record before deleting a part of speech")
 
 
 class PartOfSpeech(models.Model):

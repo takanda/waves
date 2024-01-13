@@ -47,6 +47,6 @@
     {
       "model": "vocabulary.partofspeech",
       "pk": 10,
-      "fields": { "ja_name": "不明", "en_name": "unknown" }
+      "fields": { "ja_name": "その他", "en_name": "others" }
     }
   ]
