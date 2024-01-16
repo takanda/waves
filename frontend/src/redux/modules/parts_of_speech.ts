@@ -26,7 +26,9 @@ const partsOfSpeech = createSlice({
   initialState: initialState,
   reducers: {
     addPartsOfSpeechChecked(state, { payload }) {
-      state.partsOfSpeechChecked = [...state.partsOfSpeechChecked, payload];
+      state.partsOfSpeechChecked = [...state.partsOfSpeechChecked, payload].sort((a, b) => {
+        return a.id - b.id;
+      });
     },
     removePartsOfSpeechChecked(state, { payload }) {
       state.partsOfSpeechChecked = state.partsOfSpeechChecked.filter(
