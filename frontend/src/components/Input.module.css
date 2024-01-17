@@ -1,0 +1,37 @@
+.main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    /* 縦方向にスクロール可能 */
+    overflow-y: scroll;
+  }
+  
+  .content {
+    flex-grow: 1;
+  }
+  
+  .content h1 {
+    text-align: center;
+  }
+  
+  .content .input {
+    margin: 0 auto;
+    width: 30%;
+    text-align: left;
+    font-size: 24px;
+  }
+  
+  .content .input input {
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+    height: 40px;
+    border-color: black;
+    font-size: 20px;
+  }
+  
+  .content .input input:focus {
+    outline: none; /* フォーカス時のデフォルトの枠線を無効化 */
+    border-color: initial; /* フォーカス時の枠線の色を初期値に戻す（変えない） */
+  }
+  

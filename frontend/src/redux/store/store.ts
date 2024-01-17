@@ -1,9 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import partsOfSpeechReducer from "./modules/parts_of_speech";
+import partsOfSpeechReducer from "../modules/parts_of_speech";
+import vocabularyReducer from "../modules/vocabulary";
+
 
 const store = configureStore({
     reducer: {
         partsOfSpeech: partsOfSpeechReducer,
+        vocabulary: vocabularyReducer,
     }
 });
 
