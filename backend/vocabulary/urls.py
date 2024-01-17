@@ -9,6 +9,6 @@ router.register("vocabulary", VocabularyModelViewSet, basename="vocabulary")
 app_name = "vocabulary"
 urlpatterns = [
     path("", include(router.urls)),
-    path("vocabulary/bulk", BulkCreateVocabularyView.as_view(), name="vocabularies"),
+    path("vocabulary/insert", BulkCreateVocabularyView.as_view(), name="insert"),
     path("vocabulary/part_of_speech", ListPartOfSpeechView.as_view(), name="part_of_speech"),
 ]

@@ -4,7 +4,7 @@ from rest_framework.reverse import reverse
 from vocabulary.models import Vocabulary
 
 
-VOCABULARY_POST_ENDPOINT = reverse("vocabulary:vocabularies")
+VOCABULARY_POST_ENDPOINT = reverse("vocabulary:insert")
 
 
 @pytest.fixture
