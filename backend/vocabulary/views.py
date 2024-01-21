@@ -4,13 +4,15 @@ from .models import Vocabulary, PartOfSpeech
 from .serializers import VocabularySerializer, PartOfSpeechSerializer
 
 
-class VocabularyModelViewSet(viewsets.ModelViewSet):
-    queryset = Vocabulary.objects.all()
+class ListCreateVocabularyView(generics.ListCreateAPIView):
     serializer_class = VocabularySerializer
 
-
-class BulkCreateVocabularyView(generics.CreateAPIView):
-    serializer_class = VocabularySerializer
+    def get_queryset(self):
+        queryset = Vocabulary.objects.all()
+        search_text = self.request.query_params.get("search_text", None)
+        if search_text:
+            queryset = queryset.filter(search_text=search_text)
+        return queryset
 
     def create(self, request, *args, **kwargs):
         if isinstance(request.data, list):

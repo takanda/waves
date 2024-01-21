@@ -1,0 +1,158 @@
+[
+  {
+    "model": "vocabulary.vocabulary",
+    "pk": 1,
+    "fields": {
+      "search_text": "test",
+      "show_text": "test",
+      "meaning": "テスト",
+      "part_of_speech": 1,
+      "created_at": "2024-01-16T06:45:25.089Z",
+      "updated_at": "2024-01-16T06:45:25.089Z"
+    }
+  },
+  {
+    "model": "vocabulary.vocabulary",
+    "pk": 2,
+    "fields": {
+      "search_text": "test2",
+      "show_text": "test2",
+      "meaning": "テスト1",
+      "part_of_speech": 1,
+      "created_at": "2024-01-16T06:51:59.329Z",
+      "updated_at": "2024-01-16T06:51:59.329Z"
+    }
+  },
+  {
+    "model": "vocabulary.vocabulary",
+    "pk": 3,
+    "fields": {
+      "search_text": "test2",
+      "show_text": "test2",
+      "meaning": "テスト2",
+      "part_of_speech": 2,
+      "created_at": "2024-01-16T06:51:59.329Z",
+      "updated_at": "2024-01-16T06:51:59.329Z"
+    }
+  },
+  {
+    "model": "vocabulary.vocabulary",
+    "pk": 4,
+    "fields": {
+      "search_text": "test3",
+      "show_text": "test3",
+      "meaning": "テスト3",
+      "part_of_speech": 1,
+      "created_at": "2024-01-16T07:18:21.007Z",
+      "updated_at": "2024-01-16T07:18:21.007Z"
+    }
+  },
+  {
+    "model": "vocabulary.vocabulary",
+    "pk": 5,
+    "fields": {
+      "search_text": "test3",
+      "show_text": "test3",
+      "meaning": "テスト4",
+      "part_of_speech": 2,
+      "created_at": "2024-01-16T07:18:21.007Z",
+      "updated_at": "2024-01-16T07:18:21.007Z"
+    }
+  },
+  {
+    "model": "vocabulary.vocabulary",
+    "pk": 6,
+    "fields": {
+      "search_text": "test4",
+      "show_text": "test4",
+      "meaning": "テスト4",
+      "part_of_speech": 1,
+      "created_at": "2024-01-16T08:16:56.512Z",
+      "updated_at": "2024-01-16T08:16:56.512Z"
+    }
+  },
+  {
+    "model": "vocabulary.vocabulary",
+    "pk": 7,
+    "fields": {
+      "search_text": "test4",
+      "show_text": "test4",
+      "meaning": "テスト5",
+      "part_of_speech": 2,
+      "created_at": "2024-01-16T08:16:56.512Z",
+      "updated_at": "2024-01-16T08:16:56.512Z"
+    }
+  },
+  {
+    "model": "vocabulary.vocabulary",
+    "pk": 8,
+    "fields": {
+      "search_text": "test5",
+      "show_text": "test5",
+      "meaning": "テスト5",
+      "part_of_speech": 1,
+      "created_at": "2024-01-16T08:20:35.730Z",
+      "updated_at": "2024-01-16T08:20:35.730Z"
+    }
+  },
+  {
+    "model": "vocabulary.vocabulary",
+    "pk": 9,
+    "fields": {
+      "search_text": "test5",
+      "show_text": "test5",
+      "meaning": "テスト6",
+      "part_of_speech": 2,
+      "created_at": "2024-01-16T08:20:35.730Z",
+      "updated_at": "2024-01-16T08:20:35.730Z"
+    }
+  },
+  {
+    "model": "vocabulary.vocabulary",
+    "pk": 10,
+    "fields": {
+      "search_text": "test6",
+      "show_text": "test6",
+      "meaning": "テスト6",
+      "part_of_speech": 2,
+      "created_at": "2024-01-17T10:19:41.517Z",
+      "updated_at": "2024-01-17T10:19:41.517Z"
+    }
+  },
+  {
+    "model": "vocabulary.vocabulary",
+    "pk": 11,
+    "fields": {
+      "search_text": "test6",
+      "show_text": "test6",
+      "meaning": "テスト7",
+      "part_of_speech": 4,
+      "created_at": "2024-01-17T10:19:41.517Z",
+      "updated_at": "2024-01-17T10:19:41.517Z"
+    }
+  },
+  {
+    "model": "vocabulary.vocabulary",
+    "pk": 12,
+    "fields": {
+      "search_text": "test6",
+      "show_text": "test6",
+      "meaning": "テスト8",
+      "part_of_speech": 5,
+      "created_at": "2024-01-17T10:19:41.517Z",
+      "updated_at": "2024-01-17T10:19:41.517Z"
+    }
+  },
+  {
+    "model": "vocabulary.vocabulary",
+    "pk": 13,
+    "fields": {
+      "search_text": "testtest",
+      "show_text": "TEst Test",
+      "meaning": "test meaning 1",
+      "part_of_speech": 1,
+      "created_at": "2024-01-17T11:58:27.920Z",
+      "updated_at": "2024-01-17T11:58:27.921Z"
+    }
+  }
+]

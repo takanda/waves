@@ -21,7 +21,7 @@ class PartOfSpeech(models.Model):
 
 
 class Vocabulary(models.Model):
-    search_text = models.CharField(max_length=512)
+    search_text = models.CharField(max_length=512, db_index=True)
     show_text = models.CharField(max_length=512)
     meaning = models.CharField(max_length=512)
     part_of_speech = models.ForeignKey(
@@ -31,4 +31,3 @@ class Vocabulary(models.Model):
 
     class Meta:
         db_table = "Vocabulary"
-    
