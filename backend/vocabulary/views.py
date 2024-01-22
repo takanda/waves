@@ -1,4 +1,4 @@
-from rest_framework import viewsets, generics, status
+from rest_framework import generics, status
 from rest_framework.response import Response 
 from .models import Vocabulary, PartOfSpeech
 from .serializers import VocabularySerializer, PartOfSpeechSerializer
@@ -35,6 +35,16 @@ class ListCreateVocabularyView(generics.ListCreateAPIView):
         if isinstance(kwargs.get("data", {}), list):
             kwargs["many"] = True
         return super().get_serializer(*args, **kwargs)
+
+
+class DeleteVocabularyView(generics.DestroyAPIView):
+    queryset = Vocabulary.objects.all()
+
+    def delete(self, request, *args, **kwargs):
+        search_text = kwargs.get("search_text")
+        queryset = self.get_queryset().filter(search_text=search_text)
+        queryset.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class ListPartOfSpeechView(generics.ListAPIView):
