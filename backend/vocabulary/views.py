@@ -1,4 +1,4 @@
-from rest_framework import generics, status
+from rest_framework import generics, views, status
 from rest_framework.response import Response 
 from .models import Vocabulary, PartOfSpeech
 from .serializers import VocabularySerializer, PartOfSpeechSerializer
@@ -36,15 +36,33 @@ class ListCreateVocabularyView(generics.ListCreateAPIView):
             kwargs["many"] = True
         return super().get_serializer(*args, **kwargs)
 
-
-class DeleteVocabularyView(generics.DestroyAPIView):
+class UpdateDeleteVocabularyView(views.APIView):
     queryset = Vocabulary.objects.all()
+    serializer = VocabularySerializer
+
+    def put(self, request, *args, **kwargs):
+        if isinstance(request.data, list):
+            instance = []
+            for data in request.data:
+                instance.append(Vocabulary.objects.get(id=data.get("id")))
+        else:
+            instance = Vocabulary.objects.get(id=request.data.get("id"))
+
+        serializer = self.get_serializer(data=request.data, instance=instance)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, *args, **kwargs):
         search_text = kwargs.get("search_text")
-        queryset = self.get_queryset().filter(search_text=search_text)
+        queryset = self.queryset.filter(search_text=search_text)
         queryset.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def get_serializer(self, *args, **kwargs):
+        if isinstance(kwargs.get("data", {}), list):
+            kwargs["many"] = True
+        return self.serializer(*args, **kwargs)
 
 
 class ListPartOfSpeechView(generics.ListAPIView):
