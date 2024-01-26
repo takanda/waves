@@ -22,28 +22,28 @@ describe("Sidebar behavior by user activity.", () => {
                 <App />
             </Provider>
         );
-        const checkboxEl = await screen.findByRole("checkbox", { name: "1-checkbox"});
+        const checkboxEl = await screen.findByRole("checkbox", { name: "1-checkbox" });
         await userEvent.click(checkboxEl);
         expect(checkboxEl).toBeChecked();
     });
-    
+
     test("checked checkboxes do not exist after submission", async () => {
         render(
             <Provider store={store}>
                 <App />
             </Provider>
         );
-        const engInputEl = await screen.findByRole("textbox");
-        const checkboxEl = await screen.findByRole("checkbox", { name: "1-checkbox"});
-        const buttonEl = await screen.findByRole("button");
+        const engInputEl = await screen.findByRole("textbox", { name: "english-word-input" });
+        const checkboxEl = await screen.findByRole("checkbox", { name: "1-checkbox" });
+        const buttonEl = await screen.findByRole("button", { name: "insert-button"});
         await userEvent.click(checkboxEl);
-        const meaningInputEl = await screen.findByRole("textbox", { name: "1"})
+        const meaningInputEl = await screen.findByRole("textbox", { name: "1" })
         await userEvent.type(engInputEl, "Test");
         await userEvent.type(meaningInputEl, "テスト");
         await userEvent.click(buttonEl);
         const checkboxEls = await screen.findAllByRole("checkbox");
-        checkboxEls.map(checkboxEl => {
+        for(let checkboxEl of checkboxEls) {
             expect(checkboxEl).not.toBeChecked();
-        });
+        }
     });
 });

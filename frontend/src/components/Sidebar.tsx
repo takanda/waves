@@ -1,36 +1,62 @@
 import React from 'react'
 import { useAppSelector, useAppDispatch } from "../redux/store/hooks";
 import styles from "./Sidebar.module.css";
-import { setIsChecked } from "../redux/modules/parts_of_speech";
-import { addEditingPosList, removeEditingPosList } from '../redux/modules/vocabulary';
+import { setEditingPosList, updateSearchText, setIsUpdate, setShowVocabularyList, fetchAsyncVocabulary } from '../redux/modules/vocabulary';
 
 
 const Sidebar = () => {
-  const partsOfSpeech = useAppSelector((state) => state.partsOfSpeech.partsOfSpeech);
-  const isChecked = useAppSelector((state) => state.partsOfSpeech.isChecked);
+  const partsOfSpeech = useAppSelector(state => state.partsOfSpeech.partsOfSpeech);
+  const editingPosList = useAppSelector(state => state.vocabulary.editingPosList);
+  const searchText = useAppSelector(state => state.vocabulary.searchText);
   const dispatch = useAppDispatch();
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>, partOfSpeech: {
+  const handleCheckboxChange = (partOfSpeech: {
     id: number
     ja_name: string;
     en_name: string;
   }) => {
-    dispatch(setIsChecked(partOfSpeech.id));
-    if (e.target.checked) {
-      dispatch(addEditingPosList(partOfSpeech.id));
-    } else {
-      dispatch(removeEditingPosList(partOfSpeech.id));
+    dispatch(setEditingPosList(partOfSpeech.id));
+  };
+
+  const submitHandler: React.FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    if (searchText) {
+      dispatch(fetchAsyncVocabulary(searchText));
     }
-  }
+  };
+
+  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    dispatch(updateSearchText(e.target.value));
+  };
+
+  const handleInsertButtonClick = () => {
+    dispatch(setIsUpdate(false));
+    dispatch(setShowVocabularyList(false));
+  };
+  
+  const handleFetchListButtonClick = () => {
+    dispatch(setIsUpdate(false));
+    dispatch(setShowVocabularyList(true));
+  };
 
   return (
     <div className={styles.sidebar}>
-      <div>
-        <p className={styles.sidebarTitle}>アクション</p>
-        <div className={styles.links}>
-          <a href="#">・データ登録</a>
-          <a href="#">・データ一覧</a>
-          <a href="#">・データ検索</a>
-        </div>
+      <button className={styles.sidebarTitle} onClick={handleInsertButtonClick}>データ登録</button>
+      <button 
+        className={styles.sidebarTitle}
+        aria-label='show-list-button'
+        onClick={handleFetchListButtonClick}
+      >データ一覧</button>
+      <p className={styles.sidebarTitle}>データ検索</p>
+      <div className={styles.sidebarSearchInput}>
+        <form onSubmit={submitHandler}>
+          <input
+            type="text"
+            placeholder='英単語/フレーズを検索'
+            value={searchText}
+            aria-label='search-vocabulary'
+            onChange={handleInputChange}
+          />
+        </form>
       </div>
 
       <div className={styles.sidebarPartsOfSpeech}>
@@ -39,12 +65,12 @@ const Sidebar = () => {
         </div>
         {partsOfSpeech.map(partOfSpeech => (
           <div className={styles.sidebarPartOfSpeech} key={partOfSpeech.id}>
-            <input 
+            <input
               id={`${partOfSpeech.id}-checkbox`}
               type="checkbox"
               aria-label={`${partOfSpeech.id}-checkbox`}
-              checked={isChecked.includes(partOfSpeech.id) ? true : false}
-              onChange={(e) => handleCheckboxChange(e, partOfSpeech)} 
+              checked={editingPosList.includes(partOfSpeech.id) ? true : false}
+              onChange={() => handleCheckboxChange(partOfSpeech)}
             />
             <label htmlFor={`${partOfSpeech.id}-checkbox`}>{partOfSpeech.ja_name}</label>
           </div>

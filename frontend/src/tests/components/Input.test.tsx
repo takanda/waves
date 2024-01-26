@@ -15,15 +15,14 @@ describe("Input area behavior by user activity", () => {
     });
     afterEach(cleanup);
     
-    test("user can only edit one input area 'english-word-input' when no part of speech is selected", async () => {
+    test("user can two input areas when no part of speech is selected", async () => {
         render(
             <Provider store={store}>
                 <App />
             </Provider>
         );
         const inputEls = await screen.findAllByRole("textbox");
-        expect(inputEls).toHaveLength(1);
-        expect(inputEls[0].id).toBe("english-word-input");
+        expect(inputEls).toHaveLength(2);
     });
     
     test("user can edit the input area with part of speech selected", async () => {
@@ -36,8 +35,7 @@ describe("Input area behavior by user activity", () => {
         await userEvent.click(checkboxEl);
 
         const inputEls = await screen.findAllByRole("textbox");
-        expect(inputEls).toHaveLength(2);
-        expect(inputEls[1].id).toBe("1");
+        expect(inputEls).toHaveLength(3);
     });
     
     test("user cannot edit the input area for a part of speech if that part of speech is deselected", async () => {
@@ -53,8 +51,8 @@ describe("Input area behavior by user activity", () => {
         await userEvent.click(firstCheckboxEl);
         
         const inputEls = await screen.findAllByRole("textbox");
-        expect(inputEls).toHaveLength(2);
-        expect(inputEls[1].id).toBe("2");
+        expect(inputEls).toHaveLength(3);
+        expect(inputEls[2].id).toBe("2");
     });
 
     it("should render input areas in in ascending order no matter what order the user selects the parts of speech", async () => {
@@ -68,7 +66,7 @@ describe("Input area behavior by user activity", () => {
         await userEvent.click(secondCheckboxEl);
         await userEvent.click(firstCheckboxEl);
         const inputEls = await screen.findAllByRole("textbox");
-        expect(inputEls[1].id).toBe("1");
+        expect(inputEls[2].id).toBe("1");
     });
     
     it("should delete all input areas for meanings after submission", async () => {
@@ -77,16 +75,16 @@ describe("Input area behavior by user activity", () => {
                 <App />
             </Provider>
         );
-        const engInputEl = await screen.findByRole("textbox");
+        const engInputEl = await screen.findByRole("textbox", { name: "english-word-input"});
         const checkboxEl = await screen.findByRole("checkbox", { name: "1-checkbox"});
-        const buttonEl = await screen.findByRole("button");
+        const buttonEl = await screen.findByRole("button", { name: "insert-button"});
         await userEvent.click(checkboxEl);
         const meaningInputEl = await screen.findByRole("textbox", { name: "1"})
         await userEvent.type(engInputEl, "Test");
         await userEvent.type(meaningInputEl, "テスト");
         await userEvent.click(buttonEl);
         const inputEls = await screen.findAllByRole("textbox");
-        expect(inputEls).toHaveLength(1);
-        expect(inputEls[0].id).toBe("english-word-input");
+        expect(inputEls).toHaveLength(2);
+        expect(inputEls[1].id).toBe("english-word-input");
     });
 });

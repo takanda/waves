@@ -6,20 +6,21 @@ import { updateInputEnglish, updateInputMeanings } from '../redux/modules/vocabu
 
 const Input = () => {
     const partsOfSpeech = useAppSelector((state) => state.partsOfSpeech.partsOfSpeech);
-    const isChecked = useAppSelector((state) => state.partsOfSpeech.isChecked);
-    const inputEnglish = useAppSelector(state => state.vocabulary?.inputEnglish);
-    const inputMeanings = useAppSelector(state => state.vocabulary?.inputMeanings);
+    const editingPosList = useAppSelector((state) => state.vocabulary.editingPosList);
+    const inputEnglish = useAppSelector((state) => state.vocabulary.inputEnglish);
+    const inputMeanings = useAppSelector((state) => state.vocabulary.inputMeanings);
+    const isUpdate = useAppSelector((state) => state.vocabulary.isUpdate);
     const dispatch = useAppDispatch();
 
-    const partsOfSpeechChecked = partsOfSpeech.filter(partOfSpeech => isChecked.includes(partOfSpeech.id));
+    const partsOfSpeechChecked = partsOfSpeech.filter(partOfSpeech => editingPosList.includes(partOfSpeech.id));
 
     const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-        if(e.target.id === "english-word-input") {
+        if (e.target.id === "english-word-input") {
             dispatch(updateInputEnglish(e.target.value));
         } else {
-            dispatch(updateInputMeanings({id: e.target.id, inputMeaning: e.target.value}));
+            dispatch(updateInputMeanings({ id: e.target.id, inputMeaning: e.target.value }));
         }
-    }
+    };
 
     return (
         <div className={styles.main}>
@@ -27,12 +28,24 @@ const Input = () => {
                 <h1>Vocabulary DB</h1>
                 <div className={styles.input}>
                     <label htmlFor="english-word-input">英単語/フレーズ</label>
-                    <input
-                        id="english-word-input"
-                        type="text"
-                        value={inputEnglish}
-                        onChange={handleInputChange}
-                    />
+                    { isUpdate ? (
+                        <input
+                            id="english-word-input"
+                            type="text"
+                            aria-label="english-word-input"
+                            value={inputEnglish}
+                            onChange={handleInputChange}
+                            readOnly
+                        />
+                    ) : (
+                        <input
+                            id="english-word-input"
+                            type="text"
+                            aria-label="english-word-input"
+                            value={inputEnglish}
+                            onChange={handleInputChange}
+                        />
+                    )}
                 </div>
 
                 {partsOfSpeechChecked.map(partOfSpeechChecked => (

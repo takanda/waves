@@ -2,7 +2,7 @@ import { EnhancedStore, configureStore } from "@reduxjs/toolkit";
 import partsOfSpeechReducer from "../redux/modules/parts_of_speech";
 import vocabularyReducer from "../redux/modules/vocabulary";
 import { PartsOfSpeechState } from "../redux/modules/parts_of_speech";
-import { VocabularyState } from "../redux/modules/vocabulary";
+import { VocabularyState, initialState } from "../redux/modules/vocabulary";
 
 export type StoreType = EnhancedStore<{
   partsOfSpeech: PartsOfSpeechState;
@@ -14,13 +14,8 @@ const storeSetUp = () => {
     partsOfSpeech: {
       partsOfSpeech: [],
       isLoading: true,
-      isChecked: [],
     },
-    vocabulary: {
-      inputEnglish: "",
-      inputMeanings: {},
-      editingPosList: [],
-    },
+    vocabulary: initialState,
   };
   const store = configureStore({
     reducer: {
@@ -47,4 +42,18 @@ const getPartOfSpeechResponse = {
   ],
 };
 
-export { storeSetUp, getPartOfSpeechResponse };
+const getVocabulary = {
+  data: [
+    {
+      id: 1,
+      search_text: "test",
+      show_text: "Test",
+      meaning: "意味1",
+      created_at: "2024-01-16T16:18:21.007117+09:00",
+      updated_at: "2024-01-25T11:59:59.968008+09:00",
+      part_of_speech: 1,
+    },
+  ],
+};
+
+export { storeSetUp, getPartOfSpeechResponse, getVocabulary };
