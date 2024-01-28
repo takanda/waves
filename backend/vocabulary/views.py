@@ -54,7 +54,7 @@ class UpdateDeleteVocabularyView(views.APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, *args, **kwargs):
-        search_text = kwargs.get("search_text")
+        search_text = kwargs.get("search_text").replace(" ", "").lower()
         queryset = self.queryset.filter(search_text=search_text)
         queryset.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
