@@ -18,3 +18,9 @@ class TestVocabularyRetrieve:
             assert len(response.data) == len(vocabularies)
             assert response.data[0].get("search_text") == vocabularies[0].search_text
             
+        def test_the_same_search_result_is_returned_even_if_the_value_passed_to_the_query_parameter_search_text_contains_uppercase_letters_or_spaces(self, api_client):
+            vocabularies = Vocabulary.objects.filter(search_text="test3")
+            response = api_client.get(f"{VOCABULARY_GET_OR_POST_ENDPOINT}?search_text=Test 3")
+            assert len(response.data) == len(vocabularies)
+            assert response.data[0].get("search_text") == vocabularies[0].search_text
+            

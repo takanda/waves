@@ -11,7 +11,7 @@ class ListCreateVocabularyView(generics.ListCreateAPIView):
         queryset = Vocabulary.objects.all()
         search_text = self.request.query_params.get("search_text", None)
         if search_text:
-            queryset = queryset.filter(search_text=search_text)
+            queryset = queryset.filter(search_text=search_text.replace(" ", "").lower())
         return queryset
 
     def create(self, request, *args, **kwargs):
