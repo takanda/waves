@@ -46,8 +46,8 @@ const getVocabulary = {
   data: [
     {
       id: 1,
-      search_text: "test",
-      show_text: "Test",
+      search_text: "testtest",
+      show_text: "Test Test",
       meaning: "意味1",
       created_at: "2024-01-16T16:18:21.007117+09:00",
       updated_at: "2024-01-25T11:59:59.968008+09:00",

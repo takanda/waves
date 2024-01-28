@@ -34,7 +34,7 @@ const Button = () => {
 
     const handleDeleteButtonClick = () => {
         if (isUpdate && inputEnglish) {
-            dispatch(deleteAsyncVocabulary(inputEnglish));
+            dispatch(deleteAsyncVocabulary(inputEnglish.replace(/\s/g,"").toLowerCase()));
         }
     };
     return (

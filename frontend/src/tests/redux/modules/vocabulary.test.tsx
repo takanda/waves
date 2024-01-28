@@ -117,7 +117,7 @@ describe("Redux module 'vocabulary' behavior check", () => {
             });
         });
         describe("Retrieve behavior check", () => {
-            test("if query parameter is 'search_text' when user search vocabulary using sidebar input", async () => {
+            test("if query parameter is lowercase and space deleted 'search_text' when user search vocabulary using sidebar input", async () => {
                 render(
                     <Provider store={store}>
                         <App />
@@ -127,9 +127,9 @@ describe("Redux module 'vocabulary' behavior check", () => {
                 (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValue(getVocabulary);
                 const spy = jest.spyOn(vocabulary, "fetchAsyncVocabulary");
                 const searchInputEl = await screen.findByRole("textbox", { name: "search-vocabulary" });
-                await userEvent.type(searchInputEl, "Test");
+                await userEvent.type(searchInputEl, "Test Test");
                 await userEvent.type(searchInputEl, "{enter}");
-                expect(spy).toHaveBeenCalledWith("Test");
+                expect(spy).toHaveBeenCalledWith("testtest");
             });
             // test("if query parameter is 'search_text' when user click vocabulary detail link", async () => {
             // });
@@ -155,8 +155,8 @@ describe("Redux module 'vocabulary' behavior check", () => {
                 expect(spy).toHaveBeenCalledWith([
                     {
                         id: 1,
-                        search_text: "test",
-                        show_text: "Test",
+                        search_text: "testtest",
+                        show_text: "Test Test",
                         meaning: "修正後意味1",
                         created_at: expect.any(String),
                         updated_at: expect.any(String),
@@ -168,7 +168,7 @@ describe("Redux module 'vocabulary' behavior check", () => {
             // });
         });
         describe("Delete behavior check", () => {
-            test("if query parameter is 'search_text' when user search vocabulary using sidebar input and click a delete button", async () => {
+            test("if query parameter is lowercase and space deleted 'search_text' when user search vocabulary using sidebar input and click a delete button", async () => {
                 render(
                     <Provider store={store}>
                         <App />
@@ -178,11 +178,11 @@ describe("Redux module 'vocabulary' behavior check", () => {
                 const spy = jest.spyOn(vocabulary, "deleteAsyncVocabulary");
                 (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValue(getVocabulary);
                 const searchInputEl = await screen.findByRole("textbox", { name: "search-vocabulary" });
-                await userEvent.type(searchInputEl, "Test");
+                await userEvent.type(searchInputEl, "Test Test");
                 await userEvent.type(searchInputEl, "{enter}");
                 const buttonEl = await screen.findByRole("button", { name: "delete-button" });
                 await userEvent.click(buttonEl);
-                expect(spy).toHaveBeenCalledWith("Test");
+                expect(spy).toHaveBeenCalledWith("testtest");
             })
         });
     });

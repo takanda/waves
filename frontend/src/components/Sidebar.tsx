@@ -20,7 +20,7 @@ const Sidebar = () => {
   const submitHandler: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     if (searchText) {
-      dispatch(fetchAsyncVocabulary(searchText));
+      dispatch(fetchAsyncVocabulary(searchText.replace(/\s/g,"").toLowerCase()));
     }
   };
 
