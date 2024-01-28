@@ -1,7 +1,7 @@
 import React from 'react'
-import { useAppSelector, useAppDispatch } from "../redux/store/hooks";
-import styles from "./Sidebar.module.css";
-import { setEditingPosList, updateSearchText, setIsUpdate, setShowVocabularyList, fetchAsyncVocabulary } from '../redux/modules/vocabulary';
+import { useAppSelector, useAppDispatch } from '../../../redux/store/hooks';
+import styles from "../styles/Sidebar.module.css";
+import { setEditingPosList, updateSearchText, setIsUpdate, setIsVisibleShowTextList, fetchAsyncVocabulary } from '../../../redux/modules/vocabulary';
 
 
 const Sidebar = () => {
@@ -20,7 +20,7 @@ const Sidebar = () => {
   const submitHandler: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     if (searchText) {
-      dispatch(fetchAsyncVocabulary(searchText.replace(/\s/g,"").toLowerCase()));
+      dispatch(fetchAsyncVocabulary(searchText.replace(/\s/g, "").toLowerCase()));
     }
   };
 
@@ -30,26 +30,30 @@ const Sidebar = () => {
 
   const handleInsertButtonClick = () => {
     dispatch(setIsUpdate(false));
-    dispatch(setShowVocabularyList(false));
+    dispatch(setIsVisibleShowTextList(false));
   };
-  
+
   const handleFetchListButtonClick = () => {
     dispatch(setIsUpdate(false));
-    dispatch(setShowVocabularyList(true));
+    dispatch(setIsVisibleShowTextList(true));
   };
 
   return (
     <div className={styles.sidebar}>
-      <button className={styles.sidebarTitle} onClick={handleInsertButtonClick}>データ登録</button>
-      <button 
+      <button
+        className={styles.sidebarTitle}
+        onClick={handleInsertButtonClick}
+      >データ登録</button>
+      <button
         className={styles.sidebarTitle}
         aria-label='show-list-button'
         onClick={handleFetchListButtonClick}
       >データ一覧</button>
-      <p className={styles.sidebarTitle}>データ検索</p>
       <div className={styles.sidebarSearchInput}>
         <form onSubmit={submitHandler}>
+          <label htmlFor='search-vocabulary' className={styles.sidebarTitle}>データ検索</label>
           <input
+            id='search-vocabulary'
             type="text"
             placeholder='英単語/フレーズを検索'
             value={searchText}
@@ -59,22 +63,24 @@ const Sidebar = () => {
         </form>
       </div>
 
-      <div className={styles.sidebarPartsOfSpeech}>
+      <div>
         <div className={styles.sidebarTitle}>
           品詞
         </div>
-        {partsOfSpeech.map(partOfSpeech => (
-          <div className={styles.sidebarPartOfSpeech} key={partOfSpeech.id}>
-            <input
-              id={`${partOfSpeech.id}-checkbox`}
-              type="checkbox"
-              aria-label={`${partOfSpeech.id}-checkbox`}
-              checked={editingPosList.includes(partOfSpeech.id) ? true : false}
-              onChange={() => handleCheckboxChange(partOfSpeech)}
-            />
-            <label htmlFor={`${partOfSpeech.id}-checkbox`}>{partOfSpeech.ja_name}</label>
-          </div>
-        ))}
+        <div className={styles.sidebarPartsOfSpeech}>
+          {partsOfSpeech.map(partOfSpeech => (
+            <div key={partOfSpeech.id}>
+              <input
+                id={`${partOfSpeech.id}-checkbox`}
+                type="checkbox"
+                aria-label={`${partOfSpeech.id}-checkbox`}
+                checked={editingPosList.includes(partOfSpeech.id) ? true : false}
+                onChange={() => handleCheckboxChange(partOfSpeech)}
+              />
+              <label htmlFor={`${partOfSpeech.id}-checkbox`}>{partOfSpeech.ja_name}</label>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )

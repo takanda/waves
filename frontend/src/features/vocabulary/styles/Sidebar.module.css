@@ -2,23 +2,32 @@
   width: 200px;
   background-color: black;
   color: aliceblue;
+  text-align: center;
+}
+
+.sidebar button {
+  background-color: black;
+  color: aliceblue;
+  border: none;
+}
+
+.sidebar button:hover {
+  cursor: pointer;
 }
 
 .sidebarTitle {
-  margin: 30px 0 0 0;
+  margin-top: 30px;
   text-align: center;
   font-size: 20px;
 }
 
 .sidebarSearchInput{
+  margin-top: 30px;
   text-align: center;
 }
 
 .sidebarPartsOfSpeech {
-  text-align: center;
-}
-
-.sidebarPartOfSpeech {
+  padding-top: 10px;
   width: 50%;
   margin: 0 auto;
   text-align: left;

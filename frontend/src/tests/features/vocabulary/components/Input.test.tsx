@@ -1,9 +1,9 @@
 import { render, screen, cleanup } from "@testing-library/react";
-import { StoreType, storeSetUp, getPartOfSpeechResponse } from "../testUtils";
+import { StoreType, storeSetUp, getPartOfSpeechResponse } from "../../../testUtils";
 import { Provider } from "react-redux";
 import axios from "axios";
 import userEvent from "@testing-library/user-event";
-import App from "../../App";
+import App from "../../../../App";
 
 jest.mock("axios");
 

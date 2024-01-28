@@ -1,8 +1,8 @@
 import axios from "axios";
 import { render, screen, cleanup } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { StoreType, storeSetUp, getPartOfSpeechResponse } from "../testUtils";
-import App from "../../App";
+import { StoreType, storeSetUp, getPartOfSpeechResponse } from "../../../testUtils";
+import App from "../../../../App";
 import userEvent from "@testing-library/user-event";
 
 

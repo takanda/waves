@@ -1,0 +1,20 @@
+.showTextList {
+    width: 50%;
+    margin: auto;
+}
+
+.showText {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.showText button {
+    background-color: white;
+    border: none;
+    font-size: 20px;
+}
+
+.showText button:hover {
+    cursor: pointer;
+    background-color: aqua;
+}

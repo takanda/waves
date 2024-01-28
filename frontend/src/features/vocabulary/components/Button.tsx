@@ -1,7 +1,7 @@
 import React from 'react'
-import { useAppSelector, useAppDispatch } from '../redux/store/hooks';
-import { clearEditingPosList, postAsyncVocabulary, updateAsyncVocabulary, deleteAsyncVocabulary } from '../redux/modules/vocabulary';
-import styles from "./Button.module.css";
+import { useAppSelector, useAppDispatch } from '../../../redux/store/hooks';
+import { clearEditingPosList, postAsyncVocabulary, updateAsyncVocabulary, deleteAsyncVocabulary } from '../../../redux/modules/vocabulary';
+import styles from "../styles/Button.module.css";
 
 
 const Button = () => {

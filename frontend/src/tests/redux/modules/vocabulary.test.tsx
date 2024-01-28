@@ -3,7 +3,7 @@ import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import axios from "axios";
 import App from "../../../App";
-import { StoreType, storeSetUp, getPartOfSpeechResponse, getVocabulary } from "../../testUtils";
+import { StoreType, storeSetUp, getPartOfSpeechResponse, getVocabulary, getVocabularyList } from "../../testUtils";
 import * as vocabulary from "../../../redux/modules/vocabulary";
 
 
@@ -124,15 +124,28 @@ describe("Redux module 'vocabulary' behavior check", () => {
                     </Provider>
                 );
                 jest.restoreAllMocks();
-                (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValue(getVocabulary);
                 const spy = jest.spyOn(vocabulary, "fetchAsyncVocabulary");
+                (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValue(getVocabulary);
                 const searchInputEl = await screen.findByRole("textbox", { name: "search-vocabulary" });
                 await userEvent.type(searchInputEl, "Test Test");
                 await userEvent.type(searchInputEl, "{enter}");
                 expect(spy).toHaveBeenCalledWith("testtest");
             });
-            // test("if query parameter is 'search_text' when user click vocabulary detail link", async () => {
-            // });
+            test("if query parameter is 'search_text' when user click show text button", async () => {
+                render(
+                    <Provider store={store}>
+                        <App />
+                    </Provider>
+                );
+                jest.restoreAllMocks();
+                const spy = jest.spyOn(vocabulary, "fetchAsyncVocabulary");
+                (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValue(getVocabularyList);
+                const showListButtonEl = await screen.findByRole("button", { name: "show-list-button" })
+                await userEvent.click(showListButtonEl);
+                const showTextButtonEl = await screen.findByRole("button", { name: "Test Test" });
+                await userEvent.click(showTextButtonEl);
+                expect(spy).toHaveBeenCalledWith("testtest");
+            });
         });
         describe("Update behavior check", () => {
             test("if updateData is puted with a list with an object having 'id', 'show_text', 'meaning', 'created_at', 'updated_at' and 'pos' when user search vocabulary using sidebar input", async () => {
@@ -148,10 +161,10 @@ describe("Redux module 'vocabulary' behavior check", () => {
                 await userEvent.type(searchInputEl, "Test");
                 await userEvent.type(searchInputEl, "{enter}");
                 const meaningInputEl = await screen.findByRole("textbox", { name: "1" });
-                const buttonEl = await screen.findByRole("button", { name: "update-button" });
+                const updateButtonEl = await screen.findByRole("button", { name: "update-button" });
                 await userEvent.clear(meaningInputEl);
                 await userEvent.type(meaningInputEl, "修正後意味1");
-                await userEvent.click(buttonEl);
+                await userEvent.click(updateButtonEl);
                 expect(spy).toHaveBeenCalledWith([
                     {
                         id: 1,
@@ -164,8 +177,38 @@ describe("Redux module 'vocabulary' behavior check", () => {
                     }
                 ]);
             });
-            // test("f updateData is puted with a list with an object having 'id', 'show_text', 'meaning', 'created_at', 'updated_at' and 'pos' when user click vocabulary detail link", async () => {
-            // });
+            test("if updateData is puted with a list with an object having 'id', 'show_text', 'meaning', 'created_at', 'updated_at' and 'pos' when user click show text button", async () => {
+                render(
+                    <Provider store={store}>
+                        <App />
+                    </Provider>
+                );
+                jest.restoreAllMocks();
+                (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValue(getVocabularyList);
+                const showListButtonEl = await screen.findByRole("button", { name: "show-list-button" })
+                await userEvent.click(showListButtonEl);
+                const showTextButtonEl = await screen.findByRole("button", { name: "Test Test" });
+                jest.restoreAllMocks();
+                const spy = jest.spyOn(vocabulary, "updateAsyncVocabulary");
+                (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValue(getVocabulary);
+                await userEvent.click(showTextButtonEl);
+                const meaningInputEl = await screen.findByRole("textbox", { name: "1" });
+                const updateButtonEl = await screen.findByRole("button", { name: "update-button" });
+                await userEvent.clear(meaningInputEl);
+                await userEvent.type(meaningInputEl, "修正後意味1");
+                await userEvent.click(updateButtonEl);
+                expect(spy).toHaveBeenCalledWith([
+                    {
+                        id: 1,
+                        search_text: "testtest",
+                        show_text: "Test Test",
+                        meaning: "修正後意味1",
+                        created_at: expect.any(String),
+                        updated_at: expect.any(String),
+                        part_of_speech: 1
+                    }
+                ]);
+            });
         });
         describe("Delete behavior check", () => {
             test("if query parameter is lowercase and space deleted 'search_text' when user search vocabulary using sidebar input and click a delete button", async () => {
@@ -183,7 +226,26 @@ describe("Redux module 'vocabulary' behavior check", () => {
                 const buttonEl = await screen.findByRole("button", { name: "delete-button" });
                 await userEvent.click(buttonEl);
                 expect(spy).toHaveBeenCalledWith("testtest");
-            })
+            });
+            test("if query parameter is lowercase and space deleted 'search_text' when user click show text button", async () => {
+                render(
+                    <Provider store={store}>
+                        <App />
+                    </Provider>
+                );
+                jest.restoreAllMocks();
+                (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValue(getVocabularyList);
+                const showListButtonEl = await screen.findByRole("button", { name: "show-list-button" })
+                await userEvent.click(showListButtonEl);
+                const showTextButtonEl = await screen.findByRole("button", { name: "Test Test" });
+                jest.restoreAllMocks();
+                const spy = jest.spyOn(vocabulary, "deleteAsyncVocabulary");
+                (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValue(getVocabulary);
+                await userEvent.click(showTextButtonEl);
+                const buttonEl = await screen.findByRole("button", { name: "delete-button" });
+                await userEvent.click(buttonEl);
+                expect(spy).toHaveBeenCalledWith("testtest");
+            });
         });
     });
 });

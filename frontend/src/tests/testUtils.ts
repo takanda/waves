@@ -56,4 +56,32 @@ const getVocabulary = {
   ],
 };
 
-export { storeSetUp, getPartOfSpeechResponse, getVocabulary };
+const getVocabularyList = {
+  data: [
+    {
+      id: 1,
+      search_text: "testtest",
+      show_text: "Test Test",
+      meaning: "意味1",
+      created_at: "2024-01-16T16:18:21.007117+09:00",
+      updated_at: "2024-01-25T11:59:59.968008+09:00",
+      part_of_speech: 1,
+    },
+    {
+      id: 2,
+      search_text: "testtest2",
+      show_text: "Test Test2",
+      meaning: "意味2",
+      created_at: "2024-01-16T16:18:21.007117+09:00",
+      updated_at: "2024-01-25T11:59:59.968008+09:00",
+      part_of_speech: 2,
+    },
+  ],
+};
+
+export {
+  storeSetUp,
+  getPartOfSpeechResponse,
+  getVocabulary,
+  getVocabularyList,
+};

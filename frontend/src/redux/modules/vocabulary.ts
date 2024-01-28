@@ -11,7 +11,7 @@ export interface Vocabulary {
   created_at: string;
   updated_at: string;
   part_of_speech: number;
-};
+}
 
 export interface VocabularyState {
   inputEnglish: string;
@@ -19,8 +19,8 @@ export interface VocabularyState {
   searchText: string;
   editingPosList: number[];
   isUpdate: boolean;
-  showVocabularyList: boolean;
-  vocabularyList: Vocabulary[];
+  isVisibleShowTextList: boolean;
+  showTextList: string[];
   editingVocabularyList: Vocabulary[];
 }
 
@@ -30,8 +30,8 @@ export const initialState: VocabularyState = {
   searchText: "",
   editingPosList: [],
   isUpdate: false,
-  showVocabularyList: false,
-  vocabularyList: [],
+  isVisibleShowTextList: false,
+  showTextList: [],
   editingVocabularyList: [],
 };
 
@@ -68,8 +68,8 @@ const vocabulary = createSlice({
     setIsUpdate(state, { payload }) {
       state.isUpdate = payload;
     },
-    setShowVocabularyList(state, { payload }) {
-      state.showVocabularyList = payload;
+    setIsVisibleShowTextList(state, { payload }) {
+      state.isVisibleShowTextList = payload;
     },
   },
   extraReducers: (builder) => {
@@ -99,7 +99,11 @@ const vocabulary = createSlice({
     builder.addCase(
       fetchAsyncVocabularyList.fulfilled,
       (state, { payload }) => {
-        state.vocabularyList = payload;
+        for(const vocabulary of payload) {
+          if (state.showTextList.indexOf(vocabulary.show_text) === -1) {
+            state.showTextList.push(vocabulary.show_text);
+          }
+        }
       }
     );
     builder.addCase(deleteAsyncVocabulary.fulfilled, (state) => {
@@ -138,12 +142,15 @@ const fetchAsyncVocabularyList = createAsyncThunk(
 const updateAsyncVocabulary = createAsyncThunk(
   "/api/vocabulary/update",
   async (payload: Vocabulary[]) => {
-    if(payload.length > 0) {
-      const response = await axios.put(`/api/vocabulary/${payload[0].search_text}`, payload);
+    if (payload.length > 0) {
+      const response = await axios.put(
+        `/api/vocabulary/${payload[0].search_text}`,
+        payload
+      );
       return response.data;
     }
   }
-)
+);
 
 const deleteAsyncVocabulary = createAsyncThunk(
   "/api/vocabulary/delete",
@@ -160,7 +167,7 @@ const {
   updateInputMeanings,
   updateSearchText,
   setIsUpdate,
-  setShowVocabularyList,
+  setIsVisibleShowTextList,
 } = vocabulary.actions;
 
 export {
@@ -170,7 +177,7 @@ export {
   updateInputMeanings,
   updateSearchText,
   setIsUpdate,
-  setShowVocabularyList,
+  setIsVisibleShowTextList,
   postAsyncVocabulary,
   fetchAsyncVocabulary,
   fetchAsyncVocabularyList,
