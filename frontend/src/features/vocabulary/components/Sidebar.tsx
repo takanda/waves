@@ -1,7 +1,7 @@
 import React from 'react'
 import { useAppSelector, useAppDispatch } from '../../../redux/store/hooks';
 import styles from "../styles/Sidebar.module.css";
-import { setEditingPosList, updateSearchText, setIsUpdate, setIsVisibleShowTextList, fetchAsyncVocabulary } from '../../../redux/modules/vocabulary';
+import { setEditingPosList, updateSearchText, setIsUpdate, setIsVisibleShowTextList, updateInputEnglish, clearInputMeanings, fetchAsyncVocabulary, clearEditingPosList } from '../../../redux/modules/vocabulary';
 
 
 const Sidebar = () => {
@@ -31,11 +31,15 @@ const Sidebar = () => {
   const handleInsertButtonClick = () => {
     dispatch(setIsUpdate(false));
     dispatch(setIsVisibleShowTextList(false));
+    dispatch(clearEditingPosList());
+    dispatch(updateInputEnglish(""));
+    dispatch(clearInputMeanings());
   };
 
   const handleFetchListButtonClick = () => {
     dispatch(setIsUpdate(false));
     dispatch(setIsVisibleShowTextList(true));
+    dispatch(clearEditingPosList());
   };
 
   return (
@@ -43,6 +47,7 @@ const Sidebar = () => {
       <button
         className={styles.sidebarTitle}
         onClick={handleInsertButtonClick}
+        aria-label='insert-vocabulary-button'
       >データ登録</button>
       <button
         className={styles.sidebarTitle}

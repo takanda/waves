@@ -174,7 +174,7 @@ describe("Redux module 'vocabulary' behavior check", () => {
                         created_at: expect.any(String),
                         updated_at: expect.any(String),
                         part_of_speech: 1
-                    }
+                    },
                 ]);
             });
             test("if updateData is puted with a list with an object having 'id', 'show_text', 'meaning', 'created_at', 'updated_at' and 'pos' when user click show text button", async () => {

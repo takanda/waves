@@ -62,6 +62,9 @@ const vocabulary = createSlice({
         [payload.id]: payload.inputMeaning,
       };
     },
+    clearInputMeanings(state) {
+      state.inputMeanings = {};
+    },
     updateSearchText(state, { payload }) {
       state.searchText = payload;
     },
@@ -80,6 +83,8 @@ const vocabulary = createSlice({
     });
     builder.addCase(fetchAsyncVocabulary.fulfilled, (state, { payload }) => {
       if (payload && payload.length > 0) {
+        state.inputMeanings = {};
+        state.editingPosList = [];
         state.editingVocabularyList = payload;
         state.isUpdate = true;
         state.searchText = "";
@@ -165,6 +170,7 @@ const {
   clearEditingPosList,
   updateInputEnglish,
   updateInputMeanings,
+  clearInputMeanings,
   updateSearchText,
   setIsUpdate,
   setIsVisibleShowTextList,
@@ -175,6 +181,7 @@ export {
   clearEditingPosList,
   updateInputEnglish,
   updateInputMeanings,
+  clearInputMeanings,
   updateSearchText,
   setIsUpdate,
   setIsVisibleShowTextList,
