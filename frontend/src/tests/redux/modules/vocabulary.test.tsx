@@ -73,7 +73,7 @@ describe("Redux module 'vocabulary' behavior check", () => {
                 const buttonEl = await screen.findByRole("button", { name: "insert-button" });
                 await userEvent.click(checkboxEl);
                 const englishInputEl = await screen.findByRole("textbox", { name: "english-word-input" });
-                const meaningInputEl = await screen.findByRole("textbox", { name: "1" });
+                const meaningInputEl = await screen.findByRole("textbox", { name: "1-0" });
                 await userEvent.type(englishInputEl, "Test");
                 await userEvent.type(meaningInputEl, "テスト");
                 await userEvent.click(buttonEl);
@@ -96,8 +96,8 @@ describe("Redux module 'vocabulary' behavior check", () => {
                 await userEvent.click(checkboxEl1);
                 await userEvent.click(checkboxEl2);
                 const englishInputEl = await screen.findByRole("textbox", { name: "english-word-input" });
-                const meaningInputEl1 = await screen.findByRole("textbox", { name: "1" });
-                const meaningInputEl2 = await screen.findByRole("textbox", { name: "2" });
+                const meaningInputEl1 = await screen.findByRole("textbox", { name: "1-0" });
+                const meaningInputEl2 = await screen.findByRole("textbox", { name: "2-0" });
                 await userEvent.type(englishInputEl, "Test");
                 await userEvent.type(meaningInputEl1, "テスト1");
                 await userEvent.type(meaningInputEl2, "テスト2");
@@ -160,12 +160,12 @@ describe("Redux module 'vocabulary' behavior check", () => {
                 const searchInputEl = await screen.findByRole("textbox", { name: "search-vocabulary" });
                 await userEvent.type(searchInputEl, "Test");
                 await userEvent.type(searchInputEl, "{enter}");
-                const meaningInputEl = await screen.findByRole("textbox", { name: "1" });
+                const meaningInputEl = await screen.findByRole("textbox", { name: "1-0" });
                 const updateButtonEl = await screen.findByRole("button", { name: "update-button" });
                 await userEvent.clear(meaningInputEl);
                 await userEvent.type(meaningInputEl, "修正後意味1");
                 await userEvent.click(updateButtonEl);
-                expect(spy).toHaveBeenCalledWith([
+                expect(spy).toHaveBeenCalledWith(
                     {
                         id: 1,
                         search_text: "testtest",
@@ -175,7 +175,7 @@ describe("Redux module 'vocabulary' behavior check", () => {
                         updated_at: expect.any(String),
                         part_of_speech: 1
                     },
-                ]);
+                );
             });
             test("if updateData is puted with a list with an object having 'id', 'show_text', 'meaning', 'created_at', 'updated_at' and 'pos' when user click show text button", async () => {
                 render(
@@ -192,12 +192,12 @@ describe("Redux module 'vocabulary' behavior check", () => {
                 const spy = jest.spyOn(vocabulary, "updateAsyncVocabulary");
                 (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValue(getVocabulary);
                 await userEvent.click(showTextButtonEl);
-                const meaningInputEl = await screen.findByRole("textbox", { name: "1" });
+                const meaningInputEl = await screen.findByRole("textbox", { name: "1-0" });
                 const updateButtonEl = await screen.findByRole("button", { name: "update-button" });
                 await userEvent.clear(meaningInputEl);
                 await userEvent.type(meaningInputEl, "修正後意味1");
                 await userEvent.click(updateButtonEl);
-                expect(spy).toHaveBeenCalledWith([
+                expect(spy).toHaveBeenCalledWith(
                     {
                         id: 1,
                         search_text: "testtest",
@@ -207,7 +207,7 @@ describe("Redux module 'vocabulary' behavior check", () => {
                         updated_at: expect.any(String),
                         part_of_speech: 1
                     }
-                ]);
+                );
             });
         });
         describe("Delete behavior check", () => {

@@ -15,7 +15,7 @@ export interface Vocabulary {
 
 export interface VocabularyState {
   inputEnglish: string;
-  inputMeanings: { [key: string]: string };
+  inputMeanings: { [key: string]: string[] };
   searchText: string;
   editingPosList: number[];
   isUpdate: boolean;
@@ -44,7 +44,7 @@ const vocabulary = createSlice({
       if (index === -1) {
         state.editingPosList = [...state.editingPosList, payload].sort();
         if (!(payload in state.inputMeanings)) {
-          state.inputMeanings = { ...state.inputMeanings, [payload]: "" };
+          state.inputMeanings = { ...state.inputMeanings, [payload]: [""] };
         }
       } else {
         state.editingPosList.splice(index, 1);
@@ -56,11 +56,18 @@ const vocabulary = createSlice({
     updateInputEnglish(state, { payload }) {
       state.inputEnglish = payload;
     },
+    addInputMeanings(state, { payload }) {
+      state.inputMeanings = { ...state.inputMeanings, [payload]: [...state.inputMeanings[payload], ""] };
+    },
+    minusInputMeanings(state, { payload }) {
+      const { partOfSpeechId, index } = payload;
+      const updatedInputMeanings = { ...state.inputMeanings };
+      updatedInputMeanings[partOfSpeechId] = state.inputMeanings[partOfSpeechId].filter((_, i) => i !== index);
+      state.inputMeanings = updatedInputMeanings;
+    },
     updateInputMeanings(state, { payload }) {
-      state.inputMeanings = {
-        ...state.inputMeanings,
-        [payload.id]: payload.inputMeaning,
-      };
+      const id = payload.id.split("-");
+      state.inputMeanings[id[0]][id[1]] = payload.inputMeaning;
     },
     clearInputMeanings(state) {
       state.inputMeanings = {};
@@ -94,17 +101,24 @@ const vocabulary = createSlice({
             ...state.editingPosList,
             part_of_speech,
           ].sort();
-          state.inputMeanings = {
-            ...state.inputMeanings,
-            [part_of_speech]: meaning,
-          };
+          if (part_of_speech in state.inputMeanings) {
+            state.inputMeanings = {
+              ...state.inputMeanings,
+              [part_of_speech]: [...state.inputMeanings[part_of_speech], meaning],
+            };
+          } else {
+            state.inputMeanings = {
+              ...state.inputMeanings,
+              [part_of_speech]: [meaning],
+            };
+          }
         }
       }
     });
     builder.addCase(
       fetchAsyncVocabularyList.fulfilled,
       (state, { payload }) => {
-        for(const vocabulary of payload) {
+        for (const vocabulary of payload) {
           if (state.showTextList.indexOf(vocabulary.show_text) === -1) {
             state.showTextList.push(vocabulary.show_text);
           }
@@ -146,14 +160,18 @@ const fetchAsyncVocabularyList = createAsyncThunk(
 
 const updateAsyncVocabulary = createAsyncThunk(
   "/api/vocabulary/update",
-  async (payload: Vocabulary[]) => {
-    if (payload.length > 0) {
-      const response = await axios.put(
-        `/api/vocabulary/${payload[0].search_text}`,
-        payload
-      );
-      return response.data;
+  async (payload: Vocabulary | Vocabulary[]) => {
+    let endpoint;
+    if (Array.isArray(payload)) {
+      endpoint = `/api/vocabulary/${payload[0].search_text}`
+    } else {
+      endpoint = `/api/vocabulary/${payload["search_text"]}`
     }
+    const response = await axios.put(
+      endpoint,
+      payload
+    );
+    return response.data;
   }
 );
 
@@ -169,6 +187,8 @@ const {
   setEditingPosList,
   clearEditingPosList,
   updateInputEnglish,
+  addInputMeanings,
+  minusInputMeanings,
   updateInputMeanings,
   clearInputMeanings,
   updateSearchText,
@@ -180,6 +200,8 @@ export {
   setEditingPosList,
   clearEditingPosList,
   updateInputEnglish,
+  addInputMeanings,
+  minusInputMeanings,
   updateInputMeanings,
   clearInputMeanings,
   updateSearchText,

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useAppSelector, useAppDispatch } from '../../../redux/store/hooks';
-import { clearEditingPosList, postAsyncVocabulary, updateAsyncVocabulary, deleteAsyncVocabulary } from '../../../redux/modules/vocabulary';
+import { Vocabulary, clearEditingPosList, postAsyncVocabulary, updateAsyncVocabulary, deleteAsyncVocabulary, updateInputMeanings } from '../../../redux/modules/vocabulary';
 import styles from "../styles/Button.module.css";
 
 
@@ -12,29 +12,44 @@ const Button = () => {
     const editingVocabularyList = useAppSelector(state => state.vocabulary.editingVocabularyList);
     const dispatch = useAppDispatch();
     const handleInsertButtonClick = () => {
-        if (editingPosList.length === 1) {
-            const postData = { show_text: inputEnglish, meaning: inputMeanings[editingPosList[0]], part_of_speech: editingPosList[0] };
+        if (editingPosList.length === 1 && inputMeanings[editingPosList[0]].length === 1) {
+            const postData = { show_text: inputEnglish, meaning: inputMeanings[editingPosList[0]][0], part_of_speech: editingPosList[0] };
             dispatch(postAsyncVocabulary(postData));
         } else {
             const postData: {}[] = [];
-            editingPosList.map(editingPos => (
-                postData.push({ show_text: inputEnglish, meaning: inputMeanings[editingPos], part_of_speech: editingPos })
-            ));
+            for (const editingPos of editingPosList) {
+                for (const inputMeaning of inputMeanings[editingPos]) {
+                    postData.push({ show_text: inputEnglish, meaning: inputMeaning, part_of_speech: editingPos });
+                }
+            }
             dispatch(postAsyncVocabulary(postData));
         }
         dispatch(clearEditingPosList());
     };
 
     const handleUpdateButtonClick = () => {
-        const updateData = editingVocabularyList.map(editingVocabulary => {
-            return { ...editingVocabulary, meaning: inputMeanings[editingVocabulary.part_of_speech] };
-        });
+        let updateData;
+        if (editingVocabularyList.length === 1 && editingVocabularyList[0]["part_of_speech"] === editingPosList[0]) {
+            updateData = { ...editingVocabularyList[0], meaning: inputMeanings[editingPosList[0]][0] };
+        } else {
+            let updateMeanings = { ...inputMeanings };
+            updateData = editingVocabularyList.map(editingVocabulary => {
+                const meaning = updateMeanings[editingVocabulary.part_of_speech][0]
+                if (updateMeanings[editingVocabulary.part_of_speech].length === 1) {
+                    delete updateMeanings[editingVocabulary.part_of_speech];
+                } else {
+                    updateMeanings[editingVocabulary.part_of_speech].shift();
+                }   
+                return { ...editingVocabulary, meaning: meaning };
+            });
+        }
+
         dispatch(updateAsyncVocabulary(updateData));
     };
 
     const handleDeleteButtonClick = () => {
         if (isUpdate && inputEnglish) {
-            dispatch(deleteAsyncVocabulary(inputEnglish.replace(/\s/g,"").toLowerCase()));
+            dispatch(deleteAsyncVocabulary(inputEnglish.replace(/\s/g, "").toLowerCase()));
         }
     };
     return (

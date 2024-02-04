@@ -1,20 +1,42 @@
-.input {
+.inputContainer {
   margin: 0 auto;
-  width: 30%;
+  padding-left: 55px;
+  width: 42%;
   text-align: left;
   font-size: 24px;
 }
 
-.input input {
+.input {
+  display: flex;
+  flex-direction: row;
+}
+
+.inputContainer input {
+  margin-bottom: 10px;
   display: block;
-  margin: 0 auto;
-  width: 100%;
+  width: calc(100% - 55px);
   height: 40px;
   border-color: black;
   font-size: 20px;
 }
 
-.input input:focus {
-  outline: none; /* フォーカス時のデフォルトの枠線を無効化 */
-  border-color: initial; /* フォーカス時の枠線の色を初期値に戻す（変えない） */
+.inputContainer input:focus {
+  /* フォーカス時のデフォルトの枠線を無効化 */
+  outline: none;
+  /* フォーカス時の枠線の色を初期値に戻す */
+  border-color: initial;
+}
+
+.btn {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  background-color: white;
+  border: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn:hover {
+  cursor: pointer;
 }

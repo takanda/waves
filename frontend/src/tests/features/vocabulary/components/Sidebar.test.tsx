@@ -37,7 +37,7 @@ describe("Sidebar behavior by user activity.", () => {
         const checkboxEl = await screen.findByRole("checkbox", { name: "1-checkbox" });
         const buttonEl = await screen.findByRole("button", { name: "insert-button" });
         await userEvent.click(checkboxEl);
-        const meaningInputEl = await screen.findByRole("textbox", { name: "1" })
+        const meaningInputEl = await screen.findByRole("textbox", { name: "1-0" })
         await userEvent.type(engInputEl, "Test");
         await userEvent.type(meaningInputEl, "テスト");
         await userEvent.click(buttonEl);

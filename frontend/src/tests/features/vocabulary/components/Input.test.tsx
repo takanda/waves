@@ -50,7 +50,7 @@ describe("Input area behavior by user activity", () => {
 
         const inputEls = await screen.findAllByRole("textbox");
         expect(inputEls).toHaveLength(3);
-        expect(inputEls[2].id).toBe("2");
+        expect(inputEls[2].id).toBe("2-0");
     });
     it("should render input areas in in ascending order no matter what order the user selects the parts of speech", async () => {
         render(
@@ -63,7 +63,7 @@ describe("Input area behavior by user activity", () => {
         await userEvent.click(secondCheckboxEl);
         await userEvent.click(firstCheckboxEl);
         const inputEls = await screen.findAllByRole("textbox");
-        expect(inputEls[2].id).toBe("1");
+        expect(inputEls[2].id).toBe("1-0");
     });
     it("should delete all input areas for meanings after submission", async () => {
         render(
@@ -75,13 +75,35 @@ describe("Input area behavior by user activity", () => {
         const checkboxEl = await screen.findByRole("checkbox", { name: "1-checkbox" });
         const buttonEl = await screen.findByRole("button", { name: "insert-button" });
         await userEvent.click(checkboxEl);
-        const meaningInputEl = await screen.findByRole("textbox", { name: "1" })
+        const meaningInputEl = await screen.findByRole("textbox", { name: "1-0" })
         await userEvent.type(engInputEl, "Test");
         await userEvent.type(meaningInputEl, "テスト");
         await userEvent.click(buttonEl);
         const inputEls = await screen.findAllByRole("textbox");
         expect(inputEls).toHaveLength(2);
         expect(inputEls[1].id).toBe("english-word-input");
+    });
+    test("pressing the plus button to the right of the meaning input area at the top of each part of speech increases the number of input areas for that part of speech", async () => {
+        render(
+            <Provider store={store}>
+                <App />
+            </Provider>
+        );
+        await userEvent.click(await screen.findByRole("checkbox", { name: "1-checkbox" }));
+        await userEvent.click(await screen.findByRole("button", { name: "plus-1-button"}));
+        expect(await screen.findByRole("textbox", { name: "1-1"})).toBeInTheDocument();
+        expect(await screen.findAllByRole("textbox")).toHaveLength(4);
+    });
+    test("pressing the minus button to the right of the meaning input area other than the top of each part of speech decreases the number of input boxes for that part of speech", async () => {
+        render(
+            <Provider store={store}>
+                <App />
+            </Provider>
+        );
+        await userEvent.click(await screen.findByRole("checkbox", { name: "1-checkbox" }));
+        await userEvent.click(await screen.findByRole("button", { name: "plus-1-button"}));
+        await userEvent.click(await screen.findByRole("button", { name: "minus-1-1-button"}));
+        expect(await screen.findAllByRole("textbox")).toHaveLength(3);
     });
 
     describe("Input behavior when searching data", () => {
@@ -96,7 +118,7 @@ describe("Input area behavior by user activity", () => {
             const searchInputEl = await screen.findByRole("textbox", { name: "search-vocabulary" });
             await userEvent.type(searchInputEl, "Test Test");
             await userEvent.type(searchInputEl, "{enter}");
-            expect(await screen.findByRole("textbox", { name: "1" })).toBeInTheDocument();
+            expect(await screen.findByRole("textbox", { name: "1-0" })).toBeInTheDocument();
         });
         test("english word matching searching data is entered in english input area", async () => {
             render(
@@ -123,7 +145,7 @@ describe("Input area behavior by user activity", () => {
             const searchInputEl = await screen.findByRole("textbox", { name: "search-vocabulary" });
             await userEvent.type(searchInputEl, "Test Test");
             await userEvent.type(searchInputEl, "{enter}");
-            const meaningInputEl = await screen.findByRole("textbox", { name: "1" }) as HTMLInputElement;
+            const meaningInputEl = await screen.findByRole("textbox", { name: "1-0" }) as HTMLInputElement;
             expect(meaningInputEl.value).toBe("意味1");
         });
     });
@@ -191,7 +213,7 @@ describe("Input area behavior by user activity", () => {
             (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValue(getVocabulary);
             await userEvent.type(searchInputEl, "Test Test");
             await userEvent.type(searchInputEl, "{enter}");
-            const meaningInputEl = await screen.findByRole("textbox", { name: "1" }) as HTMLInputElement;
+            const meaningInputEl = await screen.findByRole("textbox", { name: "1-0" }) as HTMLInputElement;
             expect(meaningInputEl.value).toBe("意味1");
             expect(screen.getAllByRole("textbox")).toHaveLength(3);
         });
