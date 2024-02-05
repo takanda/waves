@@ -1,7 +1,7 @@
 import React from 'react'
 import { useAppSelector, useAppDispatch } from '../../../redux/store/hooks';
 import styles from "../styles/Sidebar.module.css";
-import { setEditingPosList, updateSearchText, setIsUpdate, setIsVisibleShowTextList, updateInputEnglish, clearInputMeanings, fetchAsyncVocabulary, clearEditingPosList } from '../../../redux/modules/vocabulary';
+import { setEditingPosList, updateSearchText, setIsUpdate, setIsVisibleVocabularies, updateInputEnglish, clearInputMeanings, fetchAsyncVocabulary, clearEditingPosList } from '../../../redux/modules/vocabulary';
 
 
 const Sidebar = () => {
@@ -30,7 +30,7 @@ const Sidebar = () => {
 
   const handleInsertButtonClick = () => {
     dispatch(setIsUpdate(false));
-    dispatch(setIsVisibleShowTextList(false));
+    dispatch(setIsVisibleVocabularies(false));
     dispatch(clearEditingPosList());
     dispatch(updateInputEnglish(""));
     dispatch(clearInputMeanings());
@@ -38,7 +38,7 @@ const Sidebar = () => {
 
   const handleFetchListButtonClick = () => {
     dispatch(setIsUpdate(false));
-    dispatch(setIsVisibleShowTextList(true));
+    dispatch(setIsVisibleVocabularies(true));
     dispatch(clearEditingPosList());
   };
 

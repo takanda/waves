@@ -1,6 +1,6 @@
 import React from 'react'
 import { useAppSelector, useAppDispatch } from '../../../redux/store/hooks';
-import { Vocabulary, clearEditingPosList, postAsyncVocabulary, updateAsyncVocabulary, deleteAsyncVocabulary, updateInputMeanings } from '../../../redux/modules/vocabulary';
+import { clearEditingPosList, postAsyncVocabulary, updateAsyncVocabulary, deleteAsyncVocabulary } from '../../../redux/modules/vocabulary';
 import styles from "../styles/Button.module.css";
 
 
@@ -9,7 +9,7 @@ const Button = () => {
     const inputMeanings = useAppSelector(state => state.vocabulary.inputMeanings);
     const editingPosList = useAppSelector(state => state.vocabulary.editingPosList);
     const isUpdate = useAppSelector(state => state.vocabulary.isUpdate);
-    const editingVocabularyList = useAppSelector(state => state.vocabulary.editingVocabularyList);
+    const editingVocabularyMeaningList = useAppSelector(state => state.vocabulary.editingVocabularyMeaningList);
     const dispatch = useAppDispatch();
     const handleInsertButtonClick = () => {
         if (editingPosList.length === 1 && inputMeanings[editingPosList[0]].length === 1) {
@@ -29,18 +29,18 @@ const Button = () => {
 
     const handleUpdateButtonClick = () => {
         let updateData;
-        if (editingVocabularyList.length === 1 && editingVocabularyList[0]["part_of_speech"] === editingPosList[0]) {
-            updateData = { ...editingVocabularyList[0], meaning: inputMeanings[editingPosList[0]][0] };
+        if (editingVocabularyMeaningList.length === 1 && editingVocabularyMeaningList[0]["part_of_speech"] === editingPosList[0]) {
+            updateData = { ...editingVocabularyMeaningList[0], meaning: inputMeanings[editingPosList[0]][0] };
         } else {
             let updateMeanings = { ...inputMeanings };
-            updateData = editingVocabularyList.map(editingVocabulary => {
-                const meaning = updateMeanings[editingVocabulary.part_of_speech][0]
-                if (updateMeanings[editingVocabulary.part_of_speech].length === 1) {
-                    delete updateMeanings[editingVocabulary.part_of_speech];
+            updateData = editingVocabularyMeaningList.map(editingVocabularyMeaning => {
+                const meaning = updateMeanings[editingVocabularyMeaning.part_of_speech][0]
+                if (updateMeanings[editingVocabularyMeaning.part_of_speech].length === 1) {
+                    delete updateMeanings[editingVocabularyMeaning.part_of_speech];
                 } else {
-                    updateMeanings[editingVocabulary.part_of_speech].shift();
+                    updateMeanings[editingVocabularyMeaning.part_of_speech].shift();
                 }   
-                return { ...editingVocabulary, meaning: meaning };
+                return { ...editingVocabularyMeaning, meaning: meaning };
             });
         }
 

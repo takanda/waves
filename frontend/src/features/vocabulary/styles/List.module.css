@@ -1,20 +1,20 @@
-.showTextList {
+.vocabularies {
     width: 50%;
     margin: auto;
 }
 
-.showText {
+.vocabulary {
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
-.showText button {
+.vocabulary button {
     background-color: white;
     border: none;
     font-size: 20px;
 }
 
-.showText button:hover {
+.vocabulary button:hover {
     cursor: pointer;
     background-color: aqua;
 }

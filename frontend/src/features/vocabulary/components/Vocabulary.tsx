@@ -9,6 +9,7 @@ import Button from "./Button";
 
 const Vocabulary = () => {
   const isLoading = useAppSelector((state) => state.partsOfSpeech.isLoading);
+  const isVisibleVocabularies = useAppSelector((state) => state.vocabulary.isVisibleVocabularies);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -22,7 +23,7 @@ const Vocabulary = () => {
     <div className={styles.app}>
       <Sidebar />
       <Contents />
-      <Button />
+      {isVisibleVocabularies ? <></> :  <Button />}
     </div>
   );
 };

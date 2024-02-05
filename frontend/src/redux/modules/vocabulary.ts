@@ -19,9 +19,9 @@ export interface VocabularyState {
   searchText: string;
   editingPosList: number[];
   isUpdate: boolean;
-  isVisibleShowTextList: boolean;
-  showTextList: string[];
-  editingVocabularyList: Vocabulary[];
+  isVisibleVocabularies: boolean;
+  vocabularies: string[];
+  editingVocabularyMeaningList: Vocabulary[];
 }
 
 export const initialState: VocabularyState = {
@@ -30,9 +30,9 @@ export const initialState: VocabularyState = {
   searchText: "",
   editingPosList: [],
   isUpdate: false,
-  isVisibleShowTextList: false,
-  showTextList: [],
-  editingVocabularyList: [],
+  isVisibleVocabularies: false,
+  vocabularies: [],
+  editingVocabularyMeaningList: [],
 };
 
 const vocabulary = createSlice({
@@ -78,8 +78,8 @@ const vocabulary = createSlice({
     setIsUpdate(state, { payload }) {
       state.isUpdate = payload;
     },
-    setIsVisibleShowTextList(state, { payload }) {
-      state.isVisibleShowTextList = payload;
+    setIsVisibleVocabularies(state, { payload }) {
+      state.isVisibleVocabularies = payload;
     },
   },
   extraReducers: (builder) => {
@@ -92,7 +92,7 @@ const vocabulary = createSlice({
       if (payload && payload.length > 0) {
         state.inputMeanings = {};
         state.editingPosList = [];
-        state.editingVocabularyList = payload;
+        state.editingVocabularyMeaningList = payload;
         state.isUpdate = true;
         state.searchText = "";
         state.inputEnglish = payload[0]["show_text"];
@@ -119,8 +119,8 @@ const vocabulary = createSlice({
       fetchAsyncVocabularyList.fulfilled,
       (state, { payload }) => {
         for (const vocabulary of payload) {
-          if (state.showTextList.indexOf(vocabulary.show_text) === -1) {
-            state.showTextList.push(vocabulary.show_text);
+          if (state.vocabularies.indexOf(vocabulary.show_text) === -1) {
+            state.vocabularies.push(vocabulary.show_text);
           }
         }
       }
@@ -193,7 +193,7 @@ const {
   clearInputMeanings,
   updateSearchText,
   setIsUpdate,
-  setIsVisibleShowTextList,
+  setIsVisibleVocabularies,
 } = vocabulary.actions;
 
 export {
@@ -206,7 +206,7 @@ export {
   clearInputMeanings,
   updateSearchText,
   setIsUpdate,
-  setIsVisibleShowTextList,
+  setIsVisibleVocabularies,
   postAsyncVocabulary,
   fetchAsyncVocabulary,
   fetchAsyncVocabularyList,

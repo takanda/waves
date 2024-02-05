@@ -6,12 +6,12 @@ import Input from './Input';
 
 
 const Contents = () => {
-    const isVisibleShowTextList = useAppSelector((state) => state.vocabulary.isVisibleShowTextList);
+    const isVisibleVocabularies = useAppSelector((state) => state.vocabulary.isVisibleVocabularies);
     return (
         <div className={styles.main}>
             <div className={styles.content}>
                 <h1>Vocabulary DB</h1>
-                {isVisibleShowTextList ? (
+                {isVisibleVocabularies ? (
                     <List />
                 ) : (
                     <Input />
