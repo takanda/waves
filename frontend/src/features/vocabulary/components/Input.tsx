@@ -22,11 +22,12 @@ const Input = () => {
             dispatch(updateInputMeanings({ id: e.target.id, inputMeaning: e.target.value }));
         }
     };
-    const handleButtonClick = (partOfSpeechId: number, index: number) => {
-        if (index === 0) {
-            dispatch(addInputMeanings(partOfSpeechId));
-        } else {
+    const handleButtonClick = (partOfSpeechId: number, ...args: number[]) => {
+        const index = args.pop();
+        if (index !== undefined) {
             dispatch(minusInputMeanings({ partOfSpeechId, index }));
+        } else {
+            dispatch(addInputMeanings(partOfSpeechId));
         }
     };
 
@@ -57,6 +58,13 @@ const Input = () => {
             {partsOfSpeechChecked.map(partOfSpeechChecked => (
                 <div className={styles.inputContainer} key={partOfSpeechChecked.id}>
                     <label htmlFor={`${partOfSpeechChecked.id}`}>{partOfSpeechChecked.ja_name}</label>
+                    <button
+                        className={styles.btn}
+                        aria-label={`plus-${partOfSpeechChecked.id}-button`}
+                        onClick={() => handleButtonClick(partOfSpeechChecked.id)}
+                    >
+                        <CiCirclePlus size={40} />
+                    </button>
                     {inputMeanings[partOfSpeechChecked.id].map((inputMeaning, index) => (
                         <div key={`${partOfSpeechChecked.id}-${index}`} className={styles.input}>
                             <input
@@ -66,24 +74,13 @@ const Input = () => {
                                 value={inputMeaning}
                                 onChange={handleInputChange}
                             />
-
-                            {index === 0 ? (
-                                <button
-                                    className={styles.btn}
-                                    aria-label={`plus-${partOfSpeechChecked.id}-button`}
-                                    onClick={() => handleButtonClick(partOfSpeechChecked.id, index)}
-                                >
-                                    <CiCirclePlus size={40} />
-                                </button>
-                            ) : (
-                                <button
-                                    className={styles.btn}
-                                    aria-label={`minus-${partOfSpeechChecked.id}-${index}-button`}
-                                    onClick={() => handleButtonClick(partOfSpeechChecked.id, index)}
-                                >
-                                    <CiCircleMinus size={40} />
-                                </button>
-                            )}
+                            <button
+                                className={styles.btn}
+                                aria-label={`minus-${partOfSpeechChecked.id}-${index}-button`}
+                                onClick={() => handleButtonClick(partOfSpeechChecked.id, index)}
+                            >
+                                <CiCircleMinus size={40} />
+                            </button>
                         </div>
                     ))}
                 </div>
