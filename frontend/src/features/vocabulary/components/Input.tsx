@@ -8,8 +8,8 @@ import { updateInputEnglish, addInputMeanings, updateInputMeanings, minusInputMe
 const Input = () => {
     const partsOfSpeech = useAppSelector((state) => state.partsOfSpeech.partsOfSpeech);
     const editingPosList = useAppSelector((state) => state.vocabulary.editingPosList);
-    const inputEnglish = useAppSelector((state) => state.vocabulary.inputEnglish);
-    const inputMeanings = useAppSelector((state) => state.vocabulary.inputMeanings);
+    const entry = useAppSelector((state) => state.vocabulary.entry);
+    const meanings = useAppSelector((state) => state.vocabulary.meanings);
     const isUpdate = useAppSelector((state) => state.vocabulary.isUpdate);
     const dispatch = useAppDispatch();
 
@@ -40,7 +40,7 @@ const Input = () => {
                         id="english-word-input"
                         type="text"
                         aria-label="english-word-input"
-                        value={inputEnglish}
+                        value={entry}
                         onChange={handleInputChange}
                         readOnly
                     />
@@ -49,7 +49,7 @@ const Input = () => {
                         id="english-word-input"
                         type="text"
                         aria-label="english-word-input"
-                        value={inputEnglish}
+                        value={entry}
                         onChange={handleInputChange}
                     />
                 )}
@@ -65,7 +65,7 @@ const Input = () => {
                     >
                         <CiCirclePlus size={40} />
                     </button>
-                    {inputMeanings[partOfSpeechChecked.id].map((inputMeaning, index) => (
+                    {meanings[partOfSpeechChecked.id].map((inputMeaning, index) => (
                         <div key={`${partOfSpeechChecked.id}-${index}`} className={styles.input}>
                             <input
                                 id={`${partOfSpeechChecked.id}-${index}`}

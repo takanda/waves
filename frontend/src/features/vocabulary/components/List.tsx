@@ -4,25 +4,25 @@ import styles from "../styles/List.module.css";
 import { setIsVisibleVocabularies, fetchAsyncVocabulary, fetchAsyncVocabularyList } from '../../../redux/modules/vocabulary';
 
 const List = () => {
-  const vocabularies = useAppSelector((state) => state.vocabulary.vocabularies);
+  const entries = useAppSelector((state) => state.vocabulary.entries);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchAsyncVocabularyList());
   }, [dispatch]);
 
-  const handleUpdateClick = (showText: string) => {
-    dispatch(fetchAsyncVocabulary(showText.replace(/\s/g, "").toLowerCase()));
+  const handleUpdateClick = (entry: string) => {
+    dispatch(fetchAsyncVocabulary(entry));
     dispatch(setIsVisibleVocabularies(false));
   };
 
   return (
     <>
-      {vocabularies.length > 0 ? (
+      {entries.length > 0 ? (
         <div className={styles.vocabularies}>
-          {vocabularies.map(vocabulary => (
-            <div key={vocabulary} className={styles.vocabulary}>
-              <button aria-label={vocabulary} onClick={() => handleUpdateClick(vocabulary)}>{vocabulary}</button>
+          {entries.map(entry => (
+            <div key={entry} className={styles.vocabulary}>
+              <button aria-label={entry} onClick={() => handleUpdateClick(entry)}>{entry}</button>
             </div>
           ))}
         </div>

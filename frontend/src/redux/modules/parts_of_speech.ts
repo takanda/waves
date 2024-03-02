@@ -30,10 +30,10 @@ const partsOfSpeech = createSlice({
 });
 
 const fetchAsyncPartOfSpeech = createAsyncThunk(
-  "/api/vocabulary/part_of_speech",
+  "/api/part_of_speech",
   async () => {
     const response: AxiosResponse<PartsOfSpeech> = await axios.get(
-      "/api/vocabulary/part_of_speech"
+      "/api/part_of_speech"
     );
     return response.data;
   }

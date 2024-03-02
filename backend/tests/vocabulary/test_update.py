@@ -1,107 +1,49 @@
 import pytest
-from datetime import datetime, timezone
-from rest_framework import status
-from vocabulary.models import Vocabulary
+from datetime import datetime
+from vocabulary.models import DictionaryEntry, EntryDefinition
 from tests.constants import set_endpoint
+
+@pytest.fixture
+def update_words(api_client):
+    endpoint = set_endpoint(method="UPDATE", entry="Test")
+    update_content = {
+        "entry": "UpdatedTest",
+        "entry_definitions": [
+            {
+                "id": 1,
+                "meaning": "修正後テスト1",
+                "part_of_speech": 1
+            },
+            {
+                "id": 2,
+                "meaning": "修正後テスト2",
+                "part_of_speech": 2
+            },
+        ],
+    }
+    return api_client.put(endpoint, update_content, format="json")
 
 
 @pytest.mark.django_db
 class TestVocabularyRetrieve:
     class TestNormal:
-        class TestMeaningCanBeUpdated:
-            def test_single_meaning_can_be_updated(self, api_client):
-                update_data = {
-                    "id": 2,
-                    "search_text": "test2",
-                    "show_text": "test2",
-                    "meaning": "修正後",
-                    "part_of_speech": 1,
-                    "created_at": "2024-01-16T06:51:59.329Z",
-                    "updated_at": "2024-01-16T06:51:59.329Z"
-                }
-                response = api_client.put(set_endpoint(method="UPDATE", search_text="test2"), update_data)
+        def test_update_entry(self, update_words):
+            response = update_words
+            assert response.data.get("entry") == DictionaryEntry.objects.get(id=1).entry
 
-                assert response.status_code == status.HTTP_200_OK
-                assert response.data.get("meaning") == "修正後"
-                assert Vocabulary.objects.get(pk=2).meaning == "修正後"
+        def test_update_definitions(self, update_words):
+            response = update_words
+            assert response.data.get("entry_definitions")[0].get("meaning") == EntryDefinition.objects.get(id=1).meaning
+            assert response.data.get("entry_definitions")[1].get("meaning") == EntryDefinition.objects.get(id=2).meaning
 
-            def test_multiple_meanings_can_be_updated_simultaneously(self, api_client):
-                update_data = [
-                    {
-                        "id": 2,
-                        "search_text": "test2",
-                        "show_text": "test2",
-                        "meaning": "修正後",
-                        "part_of_speech": 1,
-                        "created_at": "2024-01-16T06:51:59.329Z",
-                        "updated_at": "2024-01-16T06:51:59.329Z"
-                    },
-                    {
-                        "id": 3,
-                        "search_text": "test2",
-                        "show_text": "test2",
-                        "meaning": "修正後2",
-                        "part_of_speech": 2,
-                        "created_at": "2024-01-16T06:51:59.329Z",
-                        "updated_at": "2024-01-16T06:51:59.329Z"
-                    },
-                ]
-                response = api_client.put(set_endpoint(method="UPDATE", search_text="test2"), update_data, format="json")
+        def test_definition_unchanged_with_no_update(self, update_words):
+            update_words
+            assert EntryDefinition.objects.get(id=3).meaning == "テスト3"
 
-                assert response.status_code == status.HTTP_200_OK
-                assert Vocabulary.objects.get(pk=2).meaning == "修正後"
-                assert Vocabulary.objects.get(pk=3).meaning == "修正後2"
+        def test_update_updated_at(self, update_words):
+            response = update_words
+            assert datetime.fromisoformat(response.data.get("updated_at")) == DictionaryEntry.objects.get(id=1).updated_at
 
-        class TestUpdatedAtCanBeUpdated:
-            def test_updated_at_can_be_updated_at_the_update_date_and_time_when_single_data_update(self, api_client):
-                update_data = {
-                    "id": 2,
-                    "search_text": "test2",
-                    "show_text": "test2",
-                    "meaning": "修正後",
-                    "part_of_speech": 1,
-                    "created_at": "2024-01-16T06:51:59.329Z",
-                    "updated_at": "2024-01-16T06:51:59.329Z"
-                }
-                current_datetiem = datetime.now(timezone.utc)
-                api_client.put(set_endpoint(method="UPDATE", search_text="test2"), update_data)
-
-                updated_vocabulary = Vocabulary.objects.get(pk=2)
-                
-                assert updated_vocabulary.updated_at.year == current_datetiem.year
-                assert updated_vocabulary.updated_at.month == current_datetiem.month
-                assert updated_vocabulary.updated_at.day == current_datetiem.day
-                assert updated_vocabulary.updated_at.hour == current_datetiem.hour
-                assert updated_vocabulary.updated_at.minute == current_datetiem.minute
-
-            def test_all_updated_at_can_be_updated_at_the_update_date_and_time_when_multiple_data_update(self, api_client):
-                update_data = [
-                    {
-                        "id": 2,
-                        "search_text": "test2",
-                        "show_text": "test2",
-                        "meaning": "修正後",
-                        "part_of_speech": 1,
-                        "created_at": "2024-01-16T06:51:59.329Z",
-                        "updated_at": "2024-01-16T06:51:59.329Z"
-                    },
-                    {
-                        "id": 3,
-                        "search_text": "test2",
-                        "show_text": "test2",
-                        "meaning": "修正後2",
-                        "part_of_speech": 2,
-                        "created_at": "2024-01-16T06:51:59.329Z",
-                        "updated_at": "2024-01-16T06:51:59.329Z"
-                    },
-                ]
-                current_datetiem = datetime.now(timezone.utc)
-                api_client.put(set_endpoint(method="UPDATE", search_text="test2"), update_data, format="json")
-
-                updated_vocabulary = Vocabulary.objects.get(pk=2)
-                
-                assert updated_vocabulary.updated_at.year == current_datetiem.year
-                assert updated_vocabulary.updated_at.month == current_datetiem.month
-                assert updated_vocabulary.updated_at.day == current_datetiem.day
-                assert updated_vocabulary.updated_at.hour == current_datetiem.hour
-                assert updated_vocabulary.updated_at.minute == current_datetiem.minute
+        def test_no_update_created_at(self, update_words):
+            response = update_words
+            assert datetime.fromisoformat(response.data.get("updated_at")) != DictionaryEntry.objects.get(id=1).created_at

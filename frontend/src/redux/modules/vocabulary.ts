@@ -1,38 +1,36 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-type PostData = {} | {}[];
+export interface PostData {
+  entry: string;
+  entry_definitions: { meaning: string, part_of_speech: number }[];
+}
 
-export interface Vocabulary {
-  id: number;
-  search_text: string;
-  show_text: string;
-  meaning: string;
-  created_at: string;
-  updated_at: string;
-  part_of_speech: number;
+export interface PutData {
+  entry: string;
+  entry_definitions: { id: number, meaning: string, part_of_speech: number }[];
 }
 
 export interface VocabularyState {
-  inputEnglish: string;
-  inputMeanings: { [key: string]: string[] };
-  searchText: string;
+  entry: string;
+  meanings: { [key: string]: string[] };
+  searchEntry: string;
   editingPosList: number[];
   isUpdate: boolean;
   isVisibleVocabularies: boolean;
-  vocabularies: string[];
-  editingVocabularyMeaningList: Vocabulary[];
+  entries: string[];
+  updateDefinitionIds: { [key: string]: number[] };
 }
 
 export const initialState: VocabularyState = {
-  inputEnglish: "",
-  inputMeanings: {},
-  searchText: "",
+  entry: "",
+  meanings: {},
+  searchEntry: "",
   editingPosList: [],
   isUpdate: false,
   isVisibleVocabularies: false,
-  vocabularies: [],
-  editingVocabularyMeaningList: [],
+  entries: [],
+  updateDefinitionIds: {},
 };
 
 const vocabulary = createSlice({
@@ -43,8 +41,8 @@ const vocabulary = createSlice({
       const index = state.editingPosList.indexOf(payload);
       if (index === -1) {
         state.editingPosList = [...state.editingPosList, payload].sort();
-        if (!(payload in state.inputMeanings)) {
-          state.inputMeanings = { ...state.inputMeanings, [payload]: [""] };
+        if (!(payload in state.meanings)) {
+          state.meanings = { ...state.meanings, [payload]: [""] };
         }
       } else {
         state.editingPosList.splice(index, 1);
@@ -54,26 +52,26 @@ const vocabulary = createSlice({
       state.editingPosList = [];
     },
     updateInputEnglish(state, { payload }) {
-      state.inputEnglish = payload;
+      state.entry = payload;
     },
     addInputMeanings(state, { payload }) {
-      state.inputMeanings = { ...state.inputMeanings, [payload]: [...state.inputMeanings[payload], ""] };
+      state.meanings = { ...state.meanings, [payload]: [...state.meanings[payload], ""] };
     },
     minusInputMeanings(state, { payload }) {
       const { partOfSpeechId, index } = payload;
-      const updatedInputMeanings = { ...state.inputMeanings };
-      updatedInputMeanings[partOfSpeechId] = state.inputMeanings[partOfSpeechId].filter((_, i) => i !== index);
-      state.inputMeanings = updatedInputMeanings;
+      const updatedInputMeanings = { ...state.meanings };
+      updatedInputMeanings[partOfSpeechId] = state.meanings[partOfSpeechId].filter((_, i) => i !== index);
+      state.meanings = updatedInputMeanings;
     },
     updateInputMeanings(state, { payload }) {
       const id = payload.id.split("-");
-      state.inputMeanings[id[0]][id[1]] = payload.inputMeaning;
+      state.meanings[id[0]][id[1]] = payload.inputMeaning;
     },
     clearInputMeanings(state) {
-      state.inputMeanings = {};
+      state.meanings = {};
     },
     updateSearchText(state, { payload }) {
-      state.searchText = payload;
+      state.searchEntry = payload;
     },
     setIsUpdate(state, { payload }) {
       state.isUpdate = payload;
@@ -84,33 +82,26 @@ const vocabulary = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(postAsyncVocabulary.fulfilled, (state) => {
-      state.inputEnglish = "";
-      state.inputMeanings = {};
+      state.entry = "";
+      state.meanings = {};
       state.editingPosList = [];
     });
     builder.addCase(fetchAsyncVocabulary.fulfilled, (state, { payload }) => {
-      if (payload && payload.length > 0) {
-        state.inputMeanings = {};
+      if (payload) {
+        state.meanings = {};
         state.editingPosList = [];
-        state.editingVocabularyMeaningList = payload;
+        state.updateDefinitionIds = {};
         state.isUpdate = true;
-        state.searchText = "";
-        state.inputEnglish = payload[0]["show_text"];
-        for (const { meaning, part_of_speech } of payload) {
-          state.editingPosList = [
-            ...state.editingPosList,
-            part_of_speech,
-          ].sort();
-          if (part_of_speech in state.inputMeanings) {
-            state.inputMeanings = {
-              ...state.inputMeanings,
-              [part_of_speech]: [...state.inputMeanings[part_of_speech], meaning],
-            };
+        state.searchEntry = "";
+        state.entry = payload.entry;
+        for (const definition of payload.entry_definitions) {
+          if (state.editingPosList.includes(definition.part_of_speech)) {
+            state.updateDefinitionIds = { ...state.updateDefinitionIds, [definition.part_of_speech]: [...state.updateDefinitionIds[definition.part_of_speech], definition.id] }
+            state.meanings = { ...state.meanings, [definition.part_of_speech]: [...state.meanings[definition.part_of_speech], definition.meaning] };
           } else {
-            state.inputMeanings = {
-              ...state.inputMeanings,
-              [part_of_speech]: [meaning],
-            };
+            state.editingPosList = [...state.editingPosList, definition.part_of_speech].sort();
+            state.updateDefinitionIds = { ...state.updateDefinitionIds, [definition.part_of_speech]: [definition.id] }
+            state.meanings = { ...state.meanings, [definition.part_of_speech]: [definition.meaning] }
           }
         }
       }
@@ -118,70 +109,79 @@ const vocabulary = createSlice({
     builder.addCase(
       fetchAsyncVocabularyList.fulfilled,
       (state, { payload }) => {
+        state.entries = [];
         for (const vocabulary of payload) {
-          if (state.vocabularies.indexOf(vocabulary.show_text) === -1) {
-            state.vocabularies.push(vocabulary.show_text);
-          }
+          state.entries.push(vocabulary.entry);
         }
       }
     );
+    builder.addCase(updateAsyncVocabulary.fulfilled, (state) => {
+      state.isUpdate = false;
+      state.entry = "";
+      state.meanings = {};
+      state.editingPosList = [];  
+    });
     builder.addCase(deleteAsyncVocabulary.fulfilled, (state) => {
       state.isUpdate = false;
-      state.inputEnglish = "";
-      state.inputMeanings = {};
+      state.entry = "";
+      state.meanings = {};
+      state.editingPosList = [];
+    });
+    builder.addCase(deleteAsyncDefinition.fulfilled, (state) => {
+      state.isUpdate = false;
+      state.entry = "";
+      state.meanings = {};
       state.editingPosList = [];
     });
   },
 });
 
 const postAsyncVocabulary = createAsyncThunk(
-  "/api/vocabulary/post",
+  "/api/dictionary/post",
   async (payload: PostData) => {
-    const response = await axios.post("/api/vocabulary", payload);
+    const response = await axios.post("/api/dictionary/", payload);
     return response.data;
   }
 );
 
 const fetchAsyncVocabulary = createAsyncThunk(
-  "/api/vocabulary/get",
+  "/api/dictionary/get",
   async (payload: string) => {
-    const response = await axios.get(`/api/vocabulary?search_text=${payload}`);
+    const response = await axios.get(`/api/dictionary/${payload}/`);
     return response.data;
   }
 );
 
 const fetchAsyncVocabularyList = createAsyncThunk(
-  "/api/vocabulary/list",
+  "/api/dictionary/list",
   async () => {
-    const response = await axios.get("/api/vocabulary");
+    const response = await axios.get("/api/dictionary");
     return response.data;
   }
 );
 
 const updateAsyncVocabulary = createAsyncThunk(
-  "/api/vocabulary/update",
-  async (payload: Vocabulary | Vocabulary[]) => {
-    let endpoint;
-    if (Array.isArray(payload)) {
-      endpoint = `/api/vocabulary/${payload[0].search_text}`
-    } else {
-      endpoint = `/api/vocabulary/${payload["search_text"]}`
-    }
-    const response = await axios.put(
-      endpoint,
-      payload
-    );
+  "/api/dictionary/update",
+  async (payload: PutData) => {
+    const response = await axios.put(`/api/dictionary/${payload.entry}/`, payload);
     return response.data;
   }
 );
 
 const deleteAsyncVocabulary = createAsyncThunk(
-  "/api/vocabulary/delete",
+  "/api/dictionary/delete",
   async (payload: string) => {
-    const response = await axios.delete(`/api/vocabulary/${payload}`);
+    const response = await axios.delete(`/api/dictionary/${payload}/`);
     return response.data;
   }
 );
+
+const deleteAsyncDefinition = createAsyncThunk(
+  "/api/definition/delete",
+  async (payload: { deleted_definition_ids: number[] }) => {
+    await axios.post("/api/definition", payload);
+  }
+)
 
 const {
   setEditingPosList,
@@ -212,6 +212,7 @@ export {
   fetchAsyncVocabularyList,
   updateAsyncVocabulary,
   deleteAsyncVocabulary,
+  deleteAsyncDefinition,
 };
 
 export default vocabulary.reducer;

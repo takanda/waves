@@ -1,10 +1,14 @@
-from django.urls import path
-from .views import ListCreateVocabularyView, ListPartOfSpeechView, UpdateDeleteVocabularyView
-
+from django.urls import path, include
+from rest_framework import routers
+from .views import DictionaryViewSet, DeleteEntryDefinitionView, ListPartOfSpeechView
 
 app_name = "vocabulary"
+
+router = routers.DefaultRouter()
+router.register("dictionary", DictionaryViewSet, basename="dictionary")
+
 urlpatterns = [
-    path("vocabulary", ListCreateVocabularyView.as_view(), name="vocabulary"),
-    path("vocabulary/part_of_speech", ListPartOfSpeechView.as_view(), name="part_of_speech"),
-    path("vocabulary/<str:search_text>", UpdateDeleteVocabularyView.as_view(), name="vocabulary-list"),
+    path("part_of_speech", ListPartOfSpeechView.as_view(), name="part_of_speech"),
+    path("definition", DeleteEntryDefinitionView.as_view(), name="definition"),
+    path("", include(router.urls)),
 ]

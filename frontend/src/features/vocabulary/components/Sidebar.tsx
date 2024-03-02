@@ -7,7 +7,7 @@ import { setEditingPosList, updateSearchText, setIsUpdate, setIsVisibleVocabular
 const Sidebar = () => {
   const partsOfSpeech = useAppSelector(state => state.partsOfSpeech.partsOfSpeech);
   const editingPosList = useAppSelector(state => state.vocabulary.editingPosList);
-  const searchText = useAppSelector(state => state.vocabulary.searchText);
+  const searchEntry = useAppSelector(state => state.vocabulary.searchEntry);
   const dispatch = useAppDispatch();
   const handleCheckboxChange = (partOfSpeech: {
     id: number
@@ -19,8 +19,8 @@ const Sidebar = () => {
 
   const submitHandler: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    if (searchText) {
-      dispatch(fetchAsyncVocabulary(searchText.replace(/\s/g, "").toLowerCase()));
+    if (searchEntry) {
+      dispatch(fetchAsyncVocabulary(searchEntry.replace(/\s/g, "").toLowerCase()));
     }
   };
 
@@ -61,7 +61,7 @@ const Sidebar = () => {
             id='search-vocabulary'
             type="text"
             placeholder='英単語/フレーズを検索'
-            value={searchText}
+            value={searchEntry}
             aria-label='search-vocabulary'
             onChange={handleInputChange}
           />

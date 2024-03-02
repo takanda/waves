@@ -1,158 +1,120 @@
 [
   {
-    "model": "vocabulary.vocabulary",
+    "model": "vocabulary.dictionaryentry",
     "pk": 1,
     "fields": {
-      "search_text": "test",
-      "show_text": "test",
-      "meaning": "テスト",
-      "part_of_speech": 1,
-      "created_at": "2024-01-16T06:45:25.089Z",
-      "updated_at": "2024-01-16T06:45:25.089Z"
+      "entry": "Test",
+      "created_at": "2024-02-17T04:28:26.720Z",
+      "updated_at": "2024-02-17T04:28:26.720Z"
     }
   },
   {
-    "model": "vocabulary.vocabulary",
+    "model": "vocabulary.dictionaryentry",
     "pk": 2,
     "fields": {
-      "search_text": "test2",
-      "show_text": "test2",
-      "meaning": "テスト1",
-      "part_of_speech": 1,
-      "created_at": "2024-01-16T06:51:59.329Z",
-      "updated_at": "2024-01-16T06:51:59.329Z"
+      "entry": "Dictionary",
+      "created_at": "2024-02-20T12:27:00.020Z",
+      "updated_at": "2024-02-20T12:27:00.021Z"
     }
   },
   {
-    "model": "vocabulary.vocabulary",
+    "model": "vocabulary.dictionaryentry",
     "pk": 3,
     "fields": {
-      "search_text": "test2",
-      "show_text": "test2",
-      "meaning": "テスト2",
-      "part_of_speech": 2,
-      "created_at": "2024-01-16T06:51:59.329Z",
-      "updated_at": "2024-01-16T06:51:59.329Z"
+      "entry": "Exchange",
+      "created_at": "2024-02-20T12:28:03.971Z",
+      "updated_at": "2024-02-20T12:28:03.972Z"
     }
   },
   {
-    "model": "vocabulary.vocabulary",
+    "model": "vocabulary.dictionaryentry",
     "pk": 4,
     "fields": {
-      "search_text": "test3",
-      "show_text": "test3",
+      "entry": "quick",
+      "created_at": "2024-02-20T12:34:23.864Z",
+      "updated_at": "2024-02-20T12:34:23.864Z"
+    }
+  },
+  {
+    "model": "vocabulary.entrydefinition",
+    "pk": 1,
+    "fields": {
+      "dictionary_entry": 1,
+      "meaning": "テスト1",
+      "part_of_speech": 1
+    }
+  },
+  {
+    "model": "vocabulary.entrydefinition",
+    "pk": 2,
+    "fields": {
+      "dictionary_entry": 1,
+      "meaning": "テスト2",
+      "part_of_speech": 2
+    }
+  },
+  {
+    "model": "vocabulary.entrydefinition",
+    "pk": 3,
+    "fields": {
+      "dictionary_entry": 1,
       "meaning": "テスト3",
-      "part_of_speech": 1,
-      "created_at": "2024-01-16T07:18:21.007Z",
-      "updated_at": "2024-01-16T07:18:21.007Z"
+      "part_of_speech": 3
     }
   },
   {
-    "model": "vocabulary.vocabulary",
+    "model": "vocabulary.entrydefinition",
+    "pk": 4,
+    "fields": {
+      "dictionary_entry": 1,
+      "meaning": "テスト4",
+      "part_of_speech": 4
+    }
+  },
+  {
+    "model": "vocabulary.entrydefinition",
     "pk": 5,
-    "fields": {
-      "search_text": "test3",
-      "show_text": "test3",
-      "meaning": "テスト4",
-      "part_of_speech": 2,
-      "created_at": "2024-01-16T07:18:21.007Z",
-      "updated_at": "2024-01-16T07:18:21.007Z"
-    }
+    "fields": { "dictionary_entry": 2, "meaning": "辞書", "part_of_speech": 1 }
   },
   {
-    "model": "vocabulary.vocabulary",
+    "model": "vocabulary.entrydefinition",
     "pk": 6,
-    "fields": {
-      "search_text": "test4",
-      "show_text": "test4",
-      "meaning": "テスト4",
-      "part_of_speech": 1,
-      "created_at": "2024-01-16T08:16:56.512Z",
-      "updated_at": "2024-01-16T08:16:56.512Z"
-    }
+    "fields": { "dictionary_entry": 3, "meaning": "交換", "part_of_speech": 1 }
   },
   {
-    "model": "vocabulary.vocabulary",
+    "model": "vocabulary.entrydefinition",
     "pk": 7,
     "fields": {
-      "search_text": "test4",
-      "show_text": "test4",
-      "meaning": "テスト5",
-      "part_of_speech": 2,
-      "created_at": "2024-01-16T08:16:56.512Z",
-      "updated_at": "2024-01-16T08:16:56.512Z"
+      "dictionary_entry": 3,
+      "meaning": "交換する",
+      "part_of_speech": 3
     }
   },
   {
-    "model": "vocabulary.vocabulary",
+    "model": "vocabulary.entrydefinition",
     "pk": 8,
     "fields": {
-      "search_text": "test5",
-      "show_text": "test5",
-      "meaning": "テスト5",
-      "part_of_speech": 1,
-      "created_at": "2024-01-16T08:20:35.730Z",
-      "updated_at": "2024-01-16T08:20:35.730Z"
+      "dictionary_entry": 3,
+      "meaning": "~を交換する",
+      "part_of_speech": 4
     }
   },
   {
-    "model": "vocabulary.vocabulary",
+    "model": "vocabulary.entrydefinition",
     "pk": 9,
     "fields": {
-      "search_text": "test5",
-      "show_text": "test5",
-      "meaning": "テスト6",
-      "part_of_speech": 2,
-      "created_at": "2024-01-16T08:20:35.730Z",
-      "updated_at": "2024-01-16T08:20:35.730Z"
+      "dictionary_entry": 4,
+      "meaning": "迅速な",
+      "part_of_speech": 5
     }
   },
   {
-    "model": "vocabulary.vocabulary",
+    "model": "vocabulary.entrydefinition",
     "pk": 10,
     "fields": {
-      "search_text": "test6",
-      "show_text": "test6",
-      "meaning": "テスト6",
-      "part_of_speech": 2,
-      "created_at": "2024-01-17T10:19:41.517Z",
-      "updated_at": "2024-01-17T10:19:41.517Z"
-    }
-  },
-  {
-    "model": "vocabulary.vocabulary",
-    "pk": 11,
-    "fields": {
-      "search_text": "test6",
-      "show_text": "test6",
-      "meaning": "テスト7",
-      "part_of_speech": 4,
-      "created_at": "2024-01-17T10:19:41.517Z",
-      "updated_at": "2024-01-17T10:19:41.517Z"
-    }
-  },
-  {
-    "model": "vocabulary.vocabulary",
-    "pk": 12,
-    "fields": {
-      "search_text": "test6",
-      "show_text": "test6",
-      "meaning": "テスト8",
-      "part_of_speech": 5,
-      "created_at": "2024-01-17T10:19:41.517Z",
-      "updated_at": "2024-01-17T10:19:41.517Z"
-    }
-  },
-  {
-    "model": "vocabulary.vocabulary",
-    "pk": 13,
-    "fields": {
-      "search_text": "testtest",
-      "show_text": "TEst Test",
-      "meaning": "test meaning 1",
-      "part_of_speech": 1,
-      "created_at": "2024-01-17T11:58:27.920Z",
-      "updated_at": "2024-01-17T11:58:27.921Z"
+      "dictionary_entry": 4,
+      "meaning": "迅速に",
+      "part_of_speech": 6
     }
   }
 ]
