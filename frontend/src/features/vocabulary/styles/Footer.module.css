@@ -1,0 +1,24 @@
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 200px;
+  /* サイドバーの幅を考慮してフッターの左側の余白を設定 */
+  width: calc(100% - 200px);
+  /* サイドバーの幅を引いた残りの幅を設定 */
+  height: 100px;
+  background-color: rgba(21, 152, 182, 0.8);
+  /* 背景色を半透明にする */
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer button {
+  height: 50%;
+  width: 200px;
+  background-color: rgb(107, 107, 238);
+  color: aliceblue;
+  font-size: 20px;
+  border-color: rgb(107, 107, 238);
+}

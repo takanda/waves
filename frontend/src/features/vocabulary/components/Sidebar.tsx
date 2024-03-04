@@ -1,7 +1,8 @@
 import React from 'react'
 import { useAppSelector, useAppDispatch } from '../../../redux/store/hooks';
 import styles from "../styles/Sidebar.module.css";
-import { setEditingPosList, updateSearchText, setIsUpdate, setIsVisibleVocabularies, updateInputEnglish, clearInputMeanings, fetchAsyncVocabulary, clearEditingPosList } from '../../../redux/modules/vocabulary';
+import { setEditingPosList, setSearchEntry, setIsUpdate, setIsVisibleVocabularies, setEntry, clearInputMeanings, fetchAsyncVocabulary, clearEditingPosList } from '../../../redux/modules/vocabulary';
+import PartOfSpeechCheckBox from './PartOfSpeechCheckBox';
 
 
 const Sidebar = () => {
@@ -25,14 +26,14 @@ const Sidebar = () => {
   };
 
   const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    dispatch(updateSearchText(e.target.value));
+    dispatch(setSearchEntry(e.target.value));
   };
 
   const handleInsertButtonClick = () => {
     dispatch(setIsUpdate(false));
     dispatch(setIsVisibleVocabularies(false));
     dispatch(clearEditingPosList());
-    dispatch(updateInputEnglish(""));
+    dispatch(setEntry(""));
     dispatch(clearInputMeanings());
   };
 
@@ -74,16 +75,7 @@ const Sidebar = () => {
         </div>
         <div className={styles.sidebarPartsOfSpeech}>
           {partsOfSpeech.map(partOfSpeech => (
-            <div key={partOfSpeech.id}>
-              <input
-                id={`${partOfSpeech.id}-checkbox`}
-                type="checkbox"
-                aria-label={`${partOfSpeech.id}-checkbox`}
-                checked={editingPosList.includes(partOfSpeech.id) ? true : false}
-                onChange={() => handleCheckboxChange(partOfSpeech)}
-              />
-              <label htmlFor={`${partOfSpeech.id}-checkbox`}>{partOfSpeech.ja_name}</label>
-            </div>
+            <PartOfSpeechCheckBox partOfSpeech={partOfSpeech} editingPosList={editingPosList} handleCheckboxChange={handleCheckboxChange}/>
           ))}
         </div>
       </div>

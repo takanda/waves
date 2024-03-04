@@ -1,11 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
 
-type PartsOfSpeech = {
+export type PartOfSpeech = {
   id: number;
   ja_name: string;
   en_name: string;
-}[];
+};
+
+type PartsOfSpeech = PartOfSpeech[];
 
 export interface PartsOfSpeechState {
   partsOfSpeech: PartsOfSpeech;

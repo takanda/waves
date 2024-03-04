@@ -51,7 +51,7 @@ const vocabulary = createSlice({
     clearEditingPosList(state) {
       state.editingPosList = [];
     },
-    updateInputEnglish(state, { payload }) {
+    setEntry(state, { payload }) {
       state.entry = payload;
     },
     addInputMeanings(state, { payload }) {
@@ -70,7 +70,7 @@ const vocabulary = createSlice({
     clearInputMeanings(state) {
       state.meanings = {};
     },
-    updateSearchText(state, { payload }) {
+    setSearchEntry(state, { payload }) {
       state.searchEntry = payload;
     },
     setIsUpdate(state, { payload }) {
@@ -186,12 +186,12 @@ const deleteAsyncDefinition = createAsyncThunk(
 const {
   setEditingPosList,
   clearEditingPosList,
-  updateInputEnglish,
+  setEntry,
   addInputMeanings,
   minusInputMeanings,
   updateInputMeanings,
   clearInputMeanings,
-  updateSearchText,
+  setSearchEntry,
   setIsUpdate,
   setIsVisibleVocabularies,
 } = vocabulary.actions;
@@ -199,12 +199,12 @@ const {
 export {
   setEditingPosList,
   clearEditingPosList,
-  updateInputEnglish,
+  setEntry,
   addInputMeanings,
   minusInputMeanings,
   updateInputMeanings,
   clearInputMeanings,
-  updateSearchText,
+  setSearchEntry,
   setIsUpdate,
   setIsVisibleVocabularies,
   postAsyncVocabulary,

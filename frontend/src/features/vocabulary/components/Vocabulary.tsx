@@ -4,7 +4,7 @@ import styles from "../styles/Vocabulary.module.css";
 import { fetchAsyncPartOfSpeech } from "../../../redux/modules/parts_of_speech";
 import Sidebar from "./Sidebar";
 import Contents from "./Contents";
-import Button from "./Button";
+import Footer from "./Footer";
 
 
 const Vocabulary = () => {
@@ -23,7 +23,7 @@ const Vocabulary = () => {
     <div className={styles.app}>
       <Sidebar />
       <Contents />
-      {isVisibleVocabularies ? <></> :  <Button />}
+      {isVisibleVocabularies ? <></> :  <Footer />}
     </div>
   );
 };
