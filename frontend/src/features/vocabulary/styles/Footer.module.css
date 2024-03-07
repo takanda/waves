@@ -22,3 +22,15 @@
   font-size: 20px;
   border-color: rgb(107, 107, 238);
 }
+.footer button:hover {
+  cursor: pointer;
+}
+
+.footer button:disabled {
+  background-color: rgb(161, 161, 168);
+  border-color: rgb(161, 161, 168);
+}
+
+.footer button:disabled:hover {
+  cursor: default;
+}

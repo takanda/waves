@@ -10,6 +10,7 @@ const Footer = () => {
     const editingPosList = useAppSelector(state => state.vocabulary.editingPosList);
     const updateDefinitionIds = useAppSelector(state => state.vocabulary.updateDefinitionIds);
     const isUpdate = useAppSelector(state => state.vocabulary.isUpdate);
+    const validationResult = useAppSelector(state => state.vocabulary.validationResult);
     const dispatch = useAppDispatch();
     const handleInsertButtonClick = () => {
         const postData: PostData = {
@@ -92,7 +93,7 @@ const Footer = () => {
                     <button aria-label='delete-button' onClick={handleDeleteButtonClick}>削除</button>
                 </div>
             ) : (
-                <button aria-label='insert-button' onClick={handleInsertButtonClick}>保存</button>
+                <button aria-label='insert-button' onClick={handleInsertButtonClick} disabled={validationResult.isError}>保存</button>
             )}
         </div>
     )

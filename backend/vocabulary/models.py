@@ -17,7 +17,7 @@ class PartOfSpeech(models.Model):
         return self.ja_name
 
 class DictionaryEntry(models.Model):
-    entry = models.CharField(max_length=512, db_index=True)
+    entry = models.CharField(max_length=512, db_index=True, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

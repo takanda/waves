@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { create } from "domain";
 
 export interface PostData {
   entry: string;
@@ -20,6 +21,7 @@ export interface VocabularyState {
   isVisibleVocabularies: boolean;
   entries: string[];
   updateDefinitionIds: { [key: string]: number[] };
+  validationResult: { isError: boolean, errorMessage?: string };
 }
 
 export const initialState: VocabularyState = {
@@ -31,6 +33,7 @@ export const initialState: VocabularyState = {
   isVisibleVocabularies: false,
   entries: [],
   updateDefinitionIds: {},
+  validationResult: { isError: false },
 };
 
 const vocabulary = createSlice({
@@ -87,24 +90,26 @@ const vocabulary = createSlice({
       state.editingPosList = [];
     });
     builder.addCase(fetchAsyncVocabulary.fulfilled, (state, { payload }) => {
-      if (payload) {
-        state.meanings = {};
-        state.editingPosList = [];
-        state.updateDefinitionIds = {};
-        state.isUpdate = true;
-        state.searchEntry = "";
-        state.entry = payload.entry;
-        for (const definition of payload.entry_definitions) {
-          if (state.editingPosList.includes(definition.part_of_speech)) {
-            state.updateDefinitionIds = { ...state.updateDefinitionIds, [definition.part_of_speech]: [...state.updateDefinitionIds[definition.part_of_speech], definition.id] }
-            state.meanings = { ...state.meanings, [definition.part_of_speech]: [...state.meanings[definition.part_of_speech], definition.meaning] };
-          } else {
-            state.editingPosList = [...state.editingPosList, definition.part_of_speech].sort();
-            state.updateDefinitionIds = { ...state.updateDefinitionIds, [definition.part_of_speech]: [definition.id] }
-            state.meanings = { ...state.meanings, [definition.part_of_speech]: [definition.meaning] }
-          }
+      state.meanings = {};
+      state.editingPosList = [];
+      state.updateDefinitionIds = {};
+      state.isUpdate = true;
+      state.searchEntry = "";
+      state.entry = payload.entry;
+      for (const definition of payload.entry_definitions) {
+        if (state.editingPosList.includes(definition.part_of_speech)) {
+          state.updateDefinitionIds = { ...state.updateDefinitionIds, [definition.part_of_speech]: [...state.updateDefinitionIds[definition.part_of_speech], definition.id] }
+          state.meanings = { ...state.meanings, [definition.part_of_speech]: [...state.meanings[definition.part_of_speech], definition.meaning] };
+        } else {
+          state.editingPosList = [...state.editingPosList, definition.part_of_speech].sort();
+          state.updateDefinitionIds = { ...state.updateDefinitionIds, [definition.part_of_speech]: [definition.id] }
+          state.meanings = { ...state.meanings, [definition.part_of_speech]: [definition.meaning] }
         }
       }
+    });
+    builder.addCase(fetchAsyncVocabulary.rejected, (state) => {
+      state.validationResult.isError = true;
+      state.validationResult.errorMessage = "見つかりませんでした";
     });
     builder.addCase(
       fetchAsyncVocabularyList.fulfilled,
@@ -119,7 +124,7 @@ const vocabulary = createSlice({
       state.isUpdate = false;
       state.entry = "";
       state.meanings = {};
-      state.editingPosList = [];  
+      state.editingPosList = [];
     });
     builder.addCase(deleteAsyncVocabulary.fulfilled, (state) => {
       state.isUpdate = false;
@@ -132,6 +137,15 @@ const vocabulary = createSlice({
       state.entry = "";
       state.meanings = {};
       state.editingPosList = [];
+    });
+    builder.addCase(checkAsyncEntry.fulfilled, (state, { payload }) => {
+      if (payload && "error_message" in payload) {
+        state.validationResult.isError = true;
+        state.validationResult.errorMessage = payload.error_message;
+      } else {
+        state.validationResult.isError = false;
+        state.validationResult.errorMessage = "";
+      }
     });
   },
 });
@@ -147,8 +161,10 @@ const postAsyncVocabulary = createAsyncThunk(
 const fetchAsyncVocabulary = createAsyncThunk(
   "/api/dictionary/get",
   async (payload: string) => {
-    const response = await axios.get(`/api/dictionary/${payload}/`);
-    return response.data;
+    if (payload) {
+      const response = await axios.get(`/api/dictionary/${payload}/`);
+      return response.data;
+    }
   }
 );
 
@@ -181,7 +197,17 @@ const deleteAsyncDefinition = createAsyncThunk(
   async (payload: { deleted_definition_ids: number[] }) => {
     await axios.post("/api/definition", payload);
   }
-)
+);
+
+const checkAsyncEntry = createAsyncThunk(
+  "/api/check_entry",
+  async (payload: string) => {
+    if (payload) {
+      const response = await axios.get(`/api/check_entry/${payload}`);
+      return response.data;
+    }
+  }
+);
 
 const {
   setEditingPosList,
@@ -213,6 +239,7 @@ export {
   updateAsyncVocabulary,
   deleteAsyncVocabulary,
   deleteAsyncDefinition,
+  checkAsyncEntry,
 };
 
 export default vocabulary.reducer;

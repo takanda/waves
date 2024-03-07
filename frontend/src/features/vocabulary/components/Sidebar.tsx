@@ -50,6 +50,7 @@ const Sidebar = () => {
         onClick={handleInsertButtonClick}
         aria-label='insert-vocabulary-button'
       >データ登録</button>
+      <br/>
       <button
         className={styles.sidebarTitle}
         aria-label='show-list-button'
@@ -75,7 +76,7 @@ const Sidebar = () => {
         </div>
         <div className={styles.sidebarPartsOfSpeech}>
           {partsOfSpeech.map(partOfSpeech => (
-            <PartOfSpeechCheckBox partOfSpeech={partOfSpeech} editingPosList={editingPosList} handleCheckboxChange={handleCheckboxChange}/>
+            <PartOfSpeechCheckBox key={partOfSpeech.id} partOfSpeech={partOfSpeech} editingPosList={editingPosList} handleCheckboxChange={handleCheckboxChange} />
           ))}
         </div>
       </div>

@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useAppSelector, useAppDispatch } from '../../../redux/store/hooks';
 import styles from "../styles/Form.module.css";
-import { setEntry, addInputMeanings, updateInputMeanings, minusInputMeanings } from '../../../redux/modules/vocabulary';
+import { setEntry, checkAsyncEntry, addInputMeanings, updateInputMeanings, minusInputMeanings } from '../../../redux/modules/vocabulary';
 import Input from './Input';
 import Button from './Button';
 
@@ -12,6 +12,7 @@ const Form = () => {
     const entry = useAppSelector((state) => state.vocabulary.entry);
     const meanings = useAppSelector((state) => state.vocabulary.meanings);
     const isUpdate = useAppSelector((state) => state.vocabulary.isUpdate);
+    const validationResult = useAppSelector((state) => state.vocabulary.validationResult);
     const dispatch = useAppDispatch();
 
     const partsOfSpeechChecked = partsOfSpeech.filter(partOfSpeech => editingPosList.includes(partOfSpeech.id));
@@ -42,8 +43,10 @@ const Form = () => {
                     aria-label="english-word-input"
                     value={entry}
                     onChange={handleInputChange}
+                    onBlur={() => dispatch(checkAsyncEntry(entry))}
                     readOnly={isUpdate}
                 />
+                {validationResult.isError && <p className={styles.errorMessage}>{validationResult.errorMessage}</p>}
             </div>
 
             {partsOfSpeechChecked.map(partOfSpeechChecked => (

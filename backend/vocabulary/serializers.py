@@ -49,7 +49,6 @@ class DictionarySerializer(serializers.ModelSerializer):
 
         return instance
 
-
 class PartOfSpeechSerializer(serializers.ModelSerializer):
     class Meta:
         model = PartOfSpeech

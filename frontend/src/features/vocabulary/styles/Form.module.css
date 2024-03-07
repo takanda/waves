@@ -26,3 +26,7 @@
   /* フォーカス時の枠線の色を初期値に戻す */
   border-color: initial;
 }
+
+.errorMessage {
+  color: red;
+}
