@@ -9,6 +9,7 @@ const Sidebar = () => {
   const partsOfSpeech = useAppSelector(state => state.partsOfSpeech.partsOfSpeech);
   const editingPosList = useAppSelector(state => state.vocabulary.editingPosList);
   const searchEntry = useAppSelector(state => state.vocabulary.searchEntry);
+  const validationResult = useAppSelector(state => state.vocabulary.validationResult);
   const dispatch = useAppDispatch();
   const handleCheckboxChange = (partOfSpeech: {
     id: number
@@ -67,6 +68,7 @@ const Sidebar = () => {
             aria-label='search-vocabulary'
             onChange={handleInputChange}
           />
+          {validationResult.errorMessage.searchEntry && <p className={styles.errorMessage}>{validationResult.errorMessage.searchEntry}</p>}
         </form>
       </div>
 

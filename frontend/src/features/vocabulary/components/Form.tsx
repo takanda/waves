@@ -46,7 +46,7 @@ const Form = () => {
                     onBlur={() => dispatch(checkAsyncEntry(entry))}
                     readOnly={isUpdate}
                 />
-                {validationResult.isError && <p className={styles.errorMessage}>{validationResult.errorMessage}</p>}
+                {validationResult.errorMessage.inputEntry && <p className={styles.errorMessage}>{validationResult.errorMessage.inputEntry}</p>}
             </div>
 
             {partsOfSpeechChecked.map(partOfSpeechChecked => (

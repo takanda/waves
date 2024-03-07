@@ -21,7 +21,7 @@ export interface VocabularyState {
   isVisibleVocabularies: boolean;
   entries: string[];
   updateDefinitionIds: { [key: string]: number[] };
-  validationResult: { isError: boolean, errorMessage?: string };
+  validationResult: { isInputEntryError: boolean, errorMessage: {inputEntry: string, searchEntry: string} };
 }
 
 export const initialState: VocabularyState = {
@@ -33,7 +33,7 @@ export const initialState: VocabularyState = {
   isVisibleVocabularies: false,
   entries: [],
   updateDefinitionIds: {},
-  validationResult: { isError: false },
+  validationResult: { isInputEntryError: false, errorMessage: {inputEntry: "", searchEntry: ""} },
 };
 
 const vocabulary = createSlice({
@@ -90,6 +90,7 @@ const vocabulary = createSlice({
       state.editingPosList = [];
     });
     builder.addCase(fetchAsyncVocabulary.fulfilled, (state, { payload }) => {
+      state.validationResult.errorMessage.searchEntry = "";
       state.meanings = {};
       state.editingPosList = [];
       state.updateDefinitionIds = {};
@@ -108,8 +109,7 @@ const vocabulary = createSlice({
       }
     });
     builder.addCase(fetchAsyncVocabulary.rejected, (state) => {
-      state.validationResult.isError = true;
-      state.validationResult.errorMessage = "見つかりませんでした";
+      state.validationResult.errorMessage.searchEntry = "見つかりませんでした";
     });
     builder.addCase(
       fetchAsyncVocabularyList.fulfilled,
@@ -140,11 +140,11 @@ const vocabulary = createSlice({
     });
     builder.addCase(checkAsyncEntry.fulfilled, (state, { payload }) => {
       if (payload && "error_message" in payload) {
-        state.validationResult.isError = true;
-        state.validationResult.errorMessage = payload.error_message;
+        state.validationResult.isInputEntryError = true;
+        state.validationResult.errorMessage.inputEntry = payload.error_message;
       } else {
-        state.validationResult.isError = false;
-        state.validationResult.errorMessage = "";
+        state.validationResult.isInputEntryError = false;
+        state.validationResult.errorMessage.inputEntry = "";
       }
     });
   },

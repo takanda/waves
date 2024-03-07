@@ -93,7 +93,7 @@ const Footer = () => {
                     <button aria-label='delete-button' onClick={handleDeleteButtonClick}>削除</button>
                 </div>
             ) : (
-                <button aria-label='insert-button' onClick={handleInsertButtonClick} disabled={validationResult.isError}>保存</button>
+                <button aria-label='insert-button' onClick={handleInsertButtonClick} disabled={validationResult.isInputEntryError}>保存</button>
             )}
         </div>
     )
