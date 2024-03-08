@@ -22,8 +22,8 @@
 }
 
 .sidebarSearchInput{
-  margin-bottom: 30px;
   text-align: center;
+  position: relative;
 }
 
 .sidebarPartsOfSpeech {
@@ -34,5 +34,8 @@
 }
 
 .errorMessage {
+  position: absolute;
+  top: 100%;
+  left: 10%;
   color: red;
 }

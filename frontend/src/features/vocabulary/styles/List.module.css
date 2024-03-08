@@ -20,3 +20,8 @@
     cursor: pointer;
     background-color: aqua;
 }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+}
