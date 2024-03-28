@@ -32,6 +32,11 @@ const Form = () => {
             dispatch(addInputMeanings(partOfSpeechId));
         }
     };
+    const handleInputBlur = () => {
+        if (!isUpdate) {
+            dispatch(checkAsyncEntry(entry));
+         }
+    };
 
     return (
         <>
@@ -43,10 +48,10 @@ const Form = () => {
                     aria-label="english-word-input"
                     value={entry}
                     onChange={handleInputChange}
-                    onBlur={() => dispatch(checkAsyncEntry(entry))}
+                    onBlur={handleInputBlur}
                     readOnly={isUpdate}
                 />
-                {validationResult.errorMessage.inputEntry && <p className={styles.errorMessage}>{validationResult.errorMessage.inputEntry}</p>}
+                {!isUpdate && validationResult.errorMessage.inputEntry && <p className={styles.errorMessage}>{validationResult.errorMessage.inputEntry}</p>}
             </div>
 
             {partsOfSpeechChecked.map(partOfSpeechChecked => (
