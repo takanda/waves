@@ -20,7 +20,7 @@ class DictionarySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DictionaryEntry
-        fields = "__all__"
+        fields = ["entry", "entry_definitions", "created_at", "updated_at"]
 
     def create(self, validated_data):
         entry_definitions = validated_data.pop("entry_definitions")

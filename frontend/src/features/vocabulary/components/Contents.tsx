@@ -2,7 +2,6 @@ import React from 'react';
 import { useAppSelector } from "../../../redux/store/hooks";
 import styles from "../styles/Contents.module.css";
 import List from './List';
-import Input from './Input';
 import Form from './Form';
 
 

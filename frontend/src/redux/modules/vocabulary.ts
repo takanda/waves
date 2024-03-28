@@ -11,6 +11,15 @@ export interface PutData {
   entry_definitions: { id: number, meaning: string, part_of_speech: number }[];
 }
 
+export interface DictionaryEntry {
+  id: number;
+  entry: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export type OrderTarget = "entry" | "created_at" | "updated_at";
+
 export interface VocabularyState {
   entry: string;
   meanings: { [key: string]: string[] };
@@ -18,7 +27,7 @@ export interface VocabularyState {
   editingPosList: number[];
   isUpdate: boolean;
   isVisibleVocabularies: boolean;
-  entries: string[];
+  dictionaryEntries: DictionaryEntry[];
   updateDefinitionIds: { [key: string]: number[] };
   validationResult: { isInputEntryError: boolean, errorMessage: {inputEntry: string, searchEntry: string} };
 }
@@ -30,7 +39,7 @@ export const initialState: VocabularyState = {
   editingPosList: [],
   isUpdate: false,
   isVisibleVocabularies: false,
-  entries: [],
+  dictionaryEntries: [],
   updateDefinitionIds: {},
   validationResult: { isInputEntryError: false, errorMessage: {inputEntry: "", searchEntry: ""} },
 };
@@ -81,6 +90,28 @@ const vocabulary = createSlice({
     setIsVisibleVocabularies(state, { payload }) {
       state.isVisibleVocabularies = payload;
     },
+    setAscOrder(state, { payload }: { payload: OrderTarget}) {
+      state.dictionaryEntries.sort((a, b) => {
+        if (a[payload] > b[payload]) {
+          return 1;
+        }
+        if (a[payload] < b[payload]) {
+          return -1;
+        }
+        return 0;
+      })
+    },
+    setDescOrder(state, { payload }: { payload: OrderTarget}) {
+      state.dictionaryEntries.sort((a, b) => {
+        if (a[payload] > b[payload]) {
+          return -1;
+        }
+        if (a[payload] < b[payload]) {
+          return 1;
+        }
+        return 0;
+      })
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(postAsyncVocabulary.fulfilled, (state) => {
@@ -113,9 +144,9 @@ const vocabulary = createSlice({
     builder.addCase(
       fetchAsyncVocabularyList.fulfilled,
       (state, { payload }) => {
-        state.entries = [];
-        for (const vocabulary of payload) {
-          state.entries.push(vocabulary.entry);
+        state.dictionaryEntries = [];
+        for (const dictionaryEntry of payload) {
+          state.dictionaryEntries.push(dictionaryEntry);
         }
       }
     );
@@ -208,7 +239,7 @@ const checkAsyncEntry = createAsyncThunk(
   }
 );
 
-const {
+export const {
   setEditingPosList,
   clearEditingPosList,
   setEntry,
@@ -219,19 +250,11 @@ const {
   setSearchEntry,
   setIsUpdate,
   setIsVisibleVocabularies,
+  setAscOrder,
+  setDescOrder,
 } = vocabulary.actions;
 
 export {
-  setEditingPosList,
-  clearEditingPosList,
-  setEntry,
-  addInputMeanings,
-  minusInputMeanings,
-  updateInputMeanings,
-  clearInputMeanings,
-  setSearchEntry,
-  setIsUpdate,
-  setIsVisibleVocabularies,
   postAsyncVocabulary,
   fetchAsyncVocabulary,
   fetchAsyncVocabularyList,

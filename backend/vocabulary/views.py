@@ -6,7 +6,7 @@ from .serializers import DictionarySerializer, PartOfSpeechSerializer
 
 class DictionaryViewSet(viewsets.ModelViewSet):
     serializer_class = DictionarySerializer
-    queryset = DictionaryEntry.objects.all()
+    queryset = DictionaryEntry.objects.all().order_by("-updated_at")
     lookup_field = "entry"
 
 class ValicatateEntryView(views.APIView):

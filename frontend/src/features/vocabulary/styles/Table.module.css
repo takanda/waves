@@ -1,0 +1,65 @@
+.vocabularies {
+    width: 80%;
+    margin: auto;
+}
+
+table {
+    width: 100%;
+}
+
+th, td {
+    border: 1px solid rgb(146, 122, 122);
+    height: 30px;
+    padding: 10px;
+}
+
+button {
+    border: none;
+    background-color: transparent;
+}
+
+.column {
+    position: relative;
+}
+
+.entryColumn {
+    width: 50%;
+}
+
+.entry:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    border-radius: 5px;
+}
+
+.ascBtn { 
+    position: absolute;
+    right: 5px;
+    top: 0%;
+    width: 35px;
+    height: 50%;
+}
+
+.descBtn { 
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    width: 35px;
+    height: 50%;
+}
+
+.ascIcon {
+    position: absolute;
+    right: 5px;
+    top: 85%;
+    transform: translateY(-50%);
+    font-size: 18px;
+}
+
+.descIcon {
+    position: absolute;
+    right: 5px;
+    top: 15%;
+    transform: translateY(-50%);
+    font-size: 18px;
+}
