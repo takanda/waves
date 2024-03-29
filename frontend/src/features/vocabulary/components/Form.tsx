@@ -3,7 +3,7 @@ import { useAppSelector, useAppDispatch } from '../../../redux/store/hooks';
 import styles from "../styles/Form.module.css";
 import { setEntry, checkAsyncEntry, addInputMeanings, updateInputMeanings, minusInputMeanings } from '../../../redux/modules/vocabulary';
 import Input from './Input';
-import Button from './Button';
+import PlusMinusButton from './PlusMinusButton';
 
 
 const Form = () => {
@@ -57,11 +57,11 @@ const Form = () => {
             {partsOfSpeechChecked.map(partOfSpeechChecked => (
                 <div className={styles.inputContainer} key={partOfSpeechChecked.id}>
                     <label htmlFor={`${partOfSpeechChecked.id}`}>{partOfSpeechChecked.ja_name}</label>
-                    <Button button='plus' partOfSpeechChecked={partOfSpeechChecked} handleButtonClick={handleButtonClick} />
+                    <PlusMinusButton button='plus' partOfSpeechChecked={partOfSpeechChecked} handleButtonClick={handleButtonClick} />
                     {meanings[partOfSpeechChecked.id].map((inputMeaning, index) => (
                         <div key={`${partOfSpeechChecked.id}-${index}`} className={styles.input}>
                             <Input partOfSpeechChecked={partOfSpeechChecked} index={index} inputMeaning={inputMeaning} handleInputChange={handleInputChange} />
-                            <Button button='minus' partOfSpeechChecked={partOfSpeechChecked} handleButtonClick={handleButtonClick} index={index} />
+                            <PlusMinusButton button='minus' partOfSpeechChecked={partOfSpeechChecked} handleButtonClick={handleButtonClick} index={index} />
                         </div>
                     ))}
                 </div>

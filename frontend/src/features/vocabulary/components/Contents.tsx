@@ -3,6 +3,7 @@ import { useAppSelector } from "../../../redux/store/hooks";
 import styles from "../styles/Contents.module.css";
 import List from './List';
 import Form from './Form';
+import Footer from './Button';
 
 
 const Contents = () => {
@@ -14,7 +15,10 @@ const Contents = () => {
                 {isVisibleVocabularies ? (
                     <List />
                 ) : (
-                    <Form />
+                    <>
+                        <Form />
+                        {isVisibleVocabularies ? <></> :  <Footer />}
+                    </>
                 )}
             </div>
         </div>
