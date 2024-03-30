@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'user.apps.UserConfig',
     'vocabulary.apps.VocabularyConfig',
+    'quiz.apps.QuizConfig',
 ]
 
 MIDDLEWARE = [
