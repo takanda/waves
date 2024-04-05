@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from '../styles/Button.module.css'
 import { useAppSelector, useAppDispatch } from '../../../redux/store/hooks'
-import { setIsStart, addCurrentIndex, setShowAnswer, updateDictionaryEntries, fetchAsyncQuizList, postAsyncQuiz, updateQuizResults, updateFailureQuizzes } from '../../../redux/modules/quiz'
+import { setIsQuiz, setIsStart, clearQuizResults, clearFailureQuizzes, clearDictionaryEntries, clearCurrentIndex, addCurrentIndex, setShowAnswer, updateDictionaryEntries, fetchAsyncQuizList, postAsyncQuiz, updateQuizResults, updateFailureQuizzes } from '../../../redux/modules/quiz'
 
 
 
@@ -19,20 +19,35 @@ const Button = () => {
   };
 
   const handleBtnClick = (result: string) => {
-    dispatch(updateQuizResults({ entry: dictionaryEntries[currentIndex].entry, result: result }));
+    const quizResult = { entry: dictionaryEntries[currentIndex].entry, result: result };
+    dispatch(updateQuizResults(quizResult));
     if (result === "failure") {
       dispatch(updateDictionaryEntries(currentIndex));
       dispatch(updateFailureQuizzes(dictionaryEntries[currentIndex].entry));
     }
     dispatch(addCurrentIndex());
-    if (result !== "failure" && currentIndex === dictionaryEntries.length - 1) {
-      dispatch(postAsyncQuiz(quizResults));
-    }
     dispatch(setShowAnswer());
   };
 
+  const clickSubmitBtnHandler = () => {
+    dispatch(postAsyncQuiz(quizResults));
+    dispatch(setIsQuiz(false));
+    dispatch(setIsStart(false));
+    dispatch(clearQuizResults());
+    dispatch(clearFailureQuizzes());
+    dispatch(clearCurrentIndex());
+    dispatch(clearDictionaryEntries());
+  };
   if (isStart && !dictionaryEntries.length) {
     return <></>;
+  }
+
+  if (dictionaryEntries.length && currentIndex >= dictionaryEntries.length) {
+    return (
+      <div className={styles.btnContainer}>
+        <button onClick={clickSubmitBtnHandler}>送信</button>
+      </div >
+    );
   }
   return (
     <div className={styles.btnContainer}>
