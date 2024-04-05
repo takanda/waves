@@ -21,10 +21,7 @@
 }
 
 .inputContainer input:focus {
-  /* フォーカス時のデフォルトの枠線を無効化 */
   outline: none;
-  /* フォーカス時の枠線の色を初期値に戻す */
-  border-color: initial;
 }
 
 .btn {

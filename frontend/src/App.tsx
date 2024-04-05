@@ -1,10 +1,8 @@
-import Vocabulary from "./features/vocabulary/components/Vocabulary";
+import Main from "./components/Main";
 
 const App = () => {
   return (
-    <>
-      <Vocabulary />
-    </>
+    <Main />
   );
 };
 export default App

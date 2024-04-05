@@ -1,0 +1,18 @@
+.quizContainer {
+    margin: 50px auto;
+}
+
+.meaningContainer {
+    width: 50%;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.partOfSpeech {
+    width: 50%;
+}
+
+.meaning {
+    flex-grow: 1;
+}

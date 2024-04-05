@@ -1,0 +1,20 @@
+.app {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.links {
+  width: 50%;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.links a {
+  display: block;
+  color: white;
+}
+
+.main {
+  flex-grow: 1;
+}

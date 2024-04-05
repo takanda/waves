@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import partsOfSpeechReducer from "../modules/parts_of_speech";
 import vocabularyReducer from "../modules/vocabulary";
+import quizReducer from "../modules/quiz";
 
 
 const store = configureStore({
     reducer: {
         partsOfSpeech: partsOfSpeechReducer,
         vocabulary: vocabularyReducer,
+        quiz: quizReducer,
     }
 });
 

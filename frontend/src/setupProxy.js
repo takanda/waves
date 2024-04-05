@@ -8,4 +8,11 @@ module.exports = (app) => {
             changeOrigin: true,
         })
     );
+    app.use(
+        '/quiz/*',
+        createProxyMiddleware({
+        target: "http://backend:8000",
+            changeOrigin: true,
+        })
+    );
 };

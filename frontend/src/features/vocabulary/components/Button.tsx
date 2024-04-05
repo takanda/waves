@@ -1,6 +1,6 @@
 import React from 'react'
 import { useAppSelector, useAppDispatch } from '../../../redux/store/hooks';
-import { PostData, PutData, clearEditingPosList, postAsyncVocabulary, updateAsyncVocabulary, deleteAsyncVocabulary, deleteAsyncDefinition } from '../../../redux/modules/vocabulary';
+import { PostData, PutData, clearEditingPosList, fetchAsyncVocabulary, postAsyncVocabulary, updateAsyncVocabulary, deleteAsyncVocabulary, deleteAsyncDefinition } from '../../../redux/modules/vocabulary';
 import styles from "../styles/Button.module.css";
 
 
@@ -10,6 +10,7 @@ const Button = () => {
     const editingPosList = useAppSelector(state => state.vocabulary.editingPosList);
     const updateDefinitionIds = useAppSelector(state => state.vocabulary.updateDefinitionIds);
     const isUpdate = useAppSelector(state => state.vocabulary.isUpdate);
+    const isSearch = useAppSelector(state => state.vocabulary.isSearch);
     const validationResult = useAppSelector(state => state.vocabulary.validationResult);
     const dispatch = useAppDispatch();
     const handleInsertButtonClick = () => {
@@ -46,7 +47,7 @@ const Button = () => {
         // 多い場合は差分をinsert(残りはupdate)
         // 少ない場合は差分をdelete(消すのは古いのから)(残りはupdate)
         for (const editingPos of editingPosList) {
-            const ids = editingPos in updateDefinitionIds ?  [...updateDefinitionIds[editingPos]] : [];
+            const ids = editingPos in updateDefinitionIds ? [...updateDefinitionIds[editingPos]] : [];
             const diff = meanings[editingPos].length - ids.length
             if (diff < 0) {
                 deleteData.deleted_definition_ids = deleteData.deleted_definition_ids.concat(ids.splice(0, Math.abs(diff)));
@@ -85,6 +86,11 @@ const Button = () => {
             dispatch(deleteAsyncVocabulary(entry.replace(/\s/g, "").toLowerCase()));
         }
     };
+
+    const handleSearchButtonClick = () => {
+        dispatch(fetchAsyncVocabulary(entry.replace(/\s/g, "").toLowerCase()));
+    };
+
     return (
         <div className={styles.button}>
             {isUpdate ? (
@@ -93,7 +99,13 @@ const Button = () => {
                     <button className={styles.deleteBtn} aria-label='delete-button' onClick={handleDeleteButtonClick}>削除</button>
                 </div>
             ) : (
-                <button className={styles.insertBtn} aria-label='insert-button' onClick={handleInsertButtonClick} disabled={validationResult.isInputEntryError}>保存</button>
+                <>
+                    {isSearch ? (
+                        <button className={styles.searchBtn} aria-label='search-button' onClick={handleSearchButtonClick}>検索</button>
+                    ) : (
+                        <button className={styles.insertBtn} aria-label='insert-button' onClick={handleInsertButtonClick} disabled={validationResult.isInputEntryError}>保存</button>
+                    )}
+                </>
             )}
         </div>
     )

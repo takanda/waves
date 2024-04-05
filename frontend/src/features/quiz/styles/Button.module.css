@@ -1,0 +1,20 @@
+.btnContainer {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.btnContainer button {
+    height: 50px;
+    width: 100px;
+    margin: 0 15px;
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+}
+
+.btnContainer button:hover {
+    background-color: white;
+    color: black;
+    transition: 0.5s;
+    border: 1px solid black;
+}

@@ -21,13 +21,13 @@
   cursor: default;
 }
 
-.insertBtn, .updateBtn {
+.insertBtn, .updateBtn, .searchBtn {
   background-color: black;
   border: none;
   color: white;
 }
 
-.insertBtn:hover, .updateBtn:hover {
+.insertBtn:hover, .updateBtn:hover, .searchBtn:hover {
   cursor: pointer;
   background-color: white;
   color: black;

@@ -1,0 +1,45 @@
+.sidebar {
+  width: 200px;
+  background-color: black;
+  color: aliceblue;
+  text-align: center;
+}
+
+.sidebar button {
+  border-radius: 5px;
+  height: 45px;
+  width: 70%;
+}
+
+.sidebarSearchContainer input:focus {
+  outline: none;
+}
+
+.sidebarBtnContainer, .quizBtnContainer, .quitBtnContainer {
+  margin: 20px auto;
+}
+
+.sidebarBtnContainer button {
+  color: white;
+  border: 1px solid white;
+}
+
+.sidebarBtnContainer button:hover{
+  background-color: white;
+  transition: 0.3s;
+  color: black;
+}
+
+.quizBtnContainer button, .quitBtnContainer button  {
+  background-color: rgb(75, 192, 224);
+  color: white;
+  border: none;
+}
+
+.quizBtnContainer button:hover, .quitBtnContainer button:hover {
+  background-color: white;
+  transition: 1.2s;
+  color: black;
+  font-weight: bold;
+  border: none;
+}

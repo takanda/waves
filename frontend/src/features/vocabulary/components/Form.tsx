@@ -12,6 +12,7 @@ const Form = () => {
     const entry = useAppSelector((state) => state.vocabulary.entry);
     const meanings = useAppSelector((state) => state.vocabulary.meanings);
     const isUpdate = useAppSelector((state) => state.vocabulary.isUpdate);
+    const isSearch = useAppSelector((state) => state.vocabulary.isSearch);
     const validationResult = useAppSelector((state) => state.vocabulary.validationResult);
     const dispatch = useAppDispatch();
 
@@ -33,9 +34,9 @@ const Form = () => {
         }
     };
     const handleInputBlur = () => {
-        if (!isUpdate) {
+        if (!isUpdate && !isSearch) {
             dispatch(checkAsyncEntry(entry));
-         }
+        }
     };
 
     return (
@@ -52,6 +53,7 @@ const Form = () => {
                     readOnly={isUpdate}
                 />
                 {!isUpdate && validationResult.errorMessage.inputEntry && <p className={styles.errorMessage}>{validationResult.errorMessage.inputEntry}</p>}
+                {isSearch && validationResult.errorMessage.searchEntry && <p>{validationResult.errorMessage.searchEntry}</p>}
             </div>
 
             {partsOfSpeechChecked.map(partOfSpeechChecked => (

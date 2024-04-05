@@ -12,8 +12,8 @@ export interface PutData {
 }
 
 export interface DictionaryEntry {
-  id: number;
   entry: string;
+  entry_definitions: { id: number, meaning: string, part_of_speech: number }[];
   created_at: string;
   updated_at: string;
 }
@@ -26,6 +26,7 @@ export interface VocabularyState {
   searchEntry: string;
   editingPosList: number[];
   isUpdate: boolean;
+  isSearch: boolean;
   isVisibleVocabularies: boolean;
   dictionaryEntries: DictionaryEntry[];
   updateDefinitionIds: { [key: string]: number[] };
@@ -38,6 +39,7 @@ export const initialState: VocabularyState = {
   searchEntry: "",
   editingPosList: [],
   isUpdate: false,
+  isSearch: false,
   isVisibleVocabularies: false,
   dictionaryEntries: [],
   updateDefinitionIds: {},
@@ -87,8 +89,14 @@ const vocabulary = createSlice({
     setIsUpdate(state, { payload }) {
       state.isUpdate = payload;
     },
+    setIsSearch(state, { payload }) {
+      state.isSearch = payload;
+    },
     setIsVisibleVocabularies(state, { payload }) {
       state.isVisibleVocabularies = payload;
+    },
+    clearValidationError(state) {
+      state.validationResult.errorMessage = {inputEntry: "", searchEntry: ""};
     },
     setAscOrder(state, { payload }: { payload: OrderTarget}) {
       state.dictionaryEntries.sort((a, b) => {
@@ -125,6 +133,7 @@ const vocabulary = createSlice({
       state.editingPosList = [];
       state.updateDefinitionIds = {};
       state.isUpdate = true;
+      state.isSearch = false;
       state.searchEntry = "";
       state.entry = payload.entry;
       for (const definition of payload.entry_definitions) {
@@ -249,7 +258,9 @@ export const {
   clearInputMeanings,
   setSearchEntry,
   setIsUpdate,
+  setIsSearch,
   setIsVisibleVocabularies,
+  clearValidationError,
   setAscOrder,
   setDescOrder,
 } = vocabulary.actions;

@@ -1,41 +1,15 @@
-.sidebar {
-  width: 200px;
-  background-color: black;
-  color: aliceblue;
-  text-align: center;
+.posContainer{
+    width: 70%;
+    margin: 30px auto;
+    text-align: left;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 10px;
 }
 
-.sidebar button {
-  background-color: black;
-  color: aliceblue;
-  border: none;
+.posTitle {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 10px;
 }
 
-.sidebar button:hover {
-  cursor: pointer;
-}
-
-.sidebarTitle {
-  margin-top: 30px;
-  text-align: center;
-  font-size: 20px;
-}
-
-.sidebarSearchInput{
-  text-align: center;
-  position: relative;
-}
-
-.sidebarPartsOfSpeech {
-  padding-top: 10px;
-  width: 50%;
-  margin: 0 auto;
-  text-align: left;
-}
-
-.errorMessage {
-  position: absolute;
-  top: 100%;
-  left: 10%;
-  color: red;
-}
