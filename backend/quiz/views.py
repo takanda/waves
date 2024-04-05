@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 import datetime
 from vocabulary.serializers import DictionarySerializer
-from .models import QuizSchedule, QuizCount
+from .models import QuizSchedule, QuizCount, DailyQuizLimit
 from .serializers import QuizScheduleSerializer, QuizCountSerializer
 from vocabulary.models import DictionaryEntry
 
@@ -12,8 +12,13 @@ class QuizStartView(generics.ListAPIView):
     serializer_class = DictionarySerializer
 
     def get_queryset(self):
-        today_quiz = QuizSchedule.objects.filter(next_date=datetime.date.today())
-        dictionary_entries = today_quiz.values_list("dictionary_entry", flat=True)
+        sorted_quizzes = QuizSchedule.objects.filter(next_date=datetime.date.today()).order_by("dictionary_entry__quizcount__trial")
+        try:
+            daily_quiz_limit = DailyQuizLimit.objects.first().limit
+            dictionary_entries = sorted_quizzes[:daily_quiz_limit].values_list("dictionary_entry", flat=True)
+        except:
+            dictionary_entries = sorted_quizzes[:100].values_list("dictionary_entry", flat=True)
+        
         return DictionaryEntry.objects.filter(id__in=dictionary_entries)
 
 
@@ -23,9 +28,10 @@ class QuizEndView(views.APIView):
         count_instance = []
         updated_schedules = []
         updated_counts = []
-        for item in request.data:
-            entry = item["entry"]
-            result = item["result"]
+        for data in request.data:
+            print(data)
+            entry = data["entry"]
+            result = data["result"]
 
             updated_schedule = {}
             updated_count = {}
@@ -52,7 +58,7 @@ class QuizEndView(views.APIView):
                 updated_schedule["next_date"] = quiz_schedule.next_date + updated_schedule["interval"]
             else:
                 updated_schedule["interval"] = datetime.timedelta(days=1)
-                updated_schedule["next_date"] = datetime.date.today() + datetime.timedelta(days=1)
+                updated_schedule["next_date"] = datetime.date.today()
                 updated_count["failure"] += 1
 
             updated_count["trial"] += 1
