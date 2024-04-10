@@ -1,5 +1,14 @@
 .main {
-    flex-grow: 1;
+    top: 0;
+    left: 200px;
+    height: 100%;
+    position: fixed;
+    overflow: auto;
+    width: calc(100% - 200px);
+}
+
+.content {
+    padding-bottom: 50px;
 }
 
 .content h1 {

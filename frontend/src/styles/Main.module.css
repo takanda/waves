@@ -1,6 +1,4 @@
 .app {
-  display: flex;
-  flex-direction: row;
   height: 100%;
 }
 
@@ -13,8 +11,4 @@
 .links a {
   display: block;
   color: white;
-}
-
-.main {
-  flex-grow: 1;
 }

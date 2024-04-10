@@ -1,5 +1,9 @@
 .sidebar {
+  top: 0;
   width: 200px;
+  height: 100%;
+  position: fixed;
+  overflow: auto;
   background-color: black;
   color: aliceblue;
   text-align: center;
