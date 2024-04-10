@@ -1,5 +1,5 @@
 {
-    "name": "DBoard frontend",
+    "name": "waves frontend",
     "dockerComposeFile": [
         "../../docker-compose.yml"
     ],
