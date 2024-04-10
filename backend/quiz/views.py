@@ -54,7 +54,7 @@ class QuizEndView(views.APIView):
 
             if result == "perfect" or result == "pass":
                 updated_schedule["interval"] = quiz_schedule.interval * updated_schedule["rate"]
-                updated_schedule["next_date"] = quiz_schedule.next_date + updated_schedule["interval"]
+                updated_schedule["next_date"] = quiz_schedule.next_date + quiz_schedule.interval
             else:
                 updated_schedule["interval"] = datetime.timedelta(days=1)
                 updated_schedule["next_date"] = datetime.date.today()
