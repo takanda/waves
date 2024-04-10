@@ -29,7 +29,6 @@ class QuizEndView(views.APIView):
         updated_schedules = []
         updated_counts = []
         for data in request.data:
-            print(data)
             entry = data["entry"]
             result = data["result"]
 
