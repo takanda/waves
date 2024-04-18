@@ -83,12 +83,12 @@ const Button = () => {
 
     const handleDeleteButtonClick = () => {
         if (isUpdate && entry) {
-            dispatch(deleteAsyncVocabulary(entry.replace(/\s/g, "").toLowerCase()));
+            dispatch(deleteAsyncVocabulary(entry));
         }
     };
 
     const handleSearchButtonClick = () => {
-        dispatch(fetchAsyncVocabulary(entry.replace(/\s/g, "").toLowerCase()));
+        dispatch(fetchAsyncVocabulary(entry));
     };
 
     return (
