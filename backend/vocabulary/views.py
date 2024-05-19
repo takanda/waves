@@ -1,7 +1,7 @@
 from rest_framework import views, generics, viewsets, status
 from rest_framework.response import Response
 from .models import DictionaryEntry, EntryDefinition, PartOfSpeech
-from .serializers import DictionarySerializer, PartOfSpeechSerializer
+from .serializers import DictionarySerializer, PartOfSpeechSerializer, CreateEntryDefinitionListSerializer
 
 
 class DictionaryViewSet(viewsets.ModelViewSet):
@@ -16,6 +16,16 @@ class ValicatateEntryView(views.APIView):
             return Response({"error_message": "すでに登録された入力値です"}, status=status.HTTP_200_OK)
         except DictionaryEntry.DoesNotExist:
             return Response(status=status.HTTP_200_OK)
+
+class CreateEntryDefinitionView(views.APIView):
+    def post(self, request):
+        serializer = CreateEntryDefinitionListSerializer(data=request.data)
+        if serializer.is_valid():
+            try:
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            except Exception as e:
+                return Response({"message": e}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class DeleteEntryDefinitionView(generics.GenericAPIView):

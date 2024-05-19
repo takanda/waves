@@ -1,6 +1,6 @@
 import React from 'react'
 import { useAppSelector, useAppDispatch } from '../../../redux/store/hooks';
-import { PostData, PutData, clearEditingPosList, fetchAsyncVocabulary, postAsyncVocabulary, updateAsyncVocabulary, deleteAsyncVocabulary, deleteAsyncDefinition } from '../../../redux/modules/vocabulary';
+import { PostData, PutData, clearEditingPosList, fetchAsyncVocabulary, postAsyncVocabulary, updateAsyncVocabulary, deleteAsyncVocabulary, postAsyncDefinition, deleteAsyncDefinition } from '../../../redux/modules/vocabulary';
 import styles from "../styles/Button.module.css";
 
 
@@ -70,13 +70,16 @@ const Button = () => {
             }
         }
         if (postData.entry_definitions.length) {
-            dispatch(postAsyncVocabulary(postData));
+            dispatch(postAsyncDefinition(postData));
+            console.log("A")
         }
         if (putData.entry_definitions.length) {
             dispatch(updateAsyncVocabulary(putData));
+            console.log("B")
         }
         if (deleteData.deleted_definition_ids.length) {
             dispatch(deleteAsyncDefinition(deleteData));
+            console.log("C")
         }
         dispatch(clearEditingPosList());
     };

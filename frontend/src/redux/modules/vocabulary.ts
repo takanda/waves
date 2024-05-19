@@ -231,10 +231,18 @@ const deleteAsyncVocabulary = createAsyncThunk(
   }
 );
 
+const postAsyncDefinition = createAsyncThunk(
+  "/api/definition/post",
+  async (payload: PostData) => {
+    const response = await axios.post("/api/definition/create", payload);
+    return response.data;
+  }
+)
+
 const deleteAsyncDefinition = createAsyncThunk(
   "/api/definition/delete",
   async (payload: { deleted_definition_ids: number[] }) => {
-    await axios.post("/api/definition", payload);
+    await axios.post("/api/definition/delete", payload);
   }
 );
 
@@ -271,6 +279,7 @@ export {
   fetchAsyncVocabularyList,
   updateAsyncVocabulary,
   deleteAsyncVocabulary,
+  postAsyncDefinition,
   deleteAsyncDefinition,
   checkAsyncEntry,
 };

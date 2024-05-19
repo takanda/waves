@@ -16,6 +16,31 @@ class EntryDefinitionSerializer(serializers.ModelSerializer):
         fields = ["id", "meaning", "part_of_speech"]
 
 
+class CreateEntryDefinitionListSerializer(serializers.Serializer):
+    entry_definitions = EntryDefinitionSerializer(many=True)
+    entry = serializers.CharField(max_length=512)
+
+    def create(self, validated_data):
+        entry_definitions_data = validated_data.pop("entry_definitions")
+        dictionary_entry = validated_data.get("entry")
+
+        try:
+            created_dictionary_entry = DictionaryEntry.objects.get(entry=dictionary_entry)
+        except DictionaryEntry.DoesNotExist:
+            created_dictionary_entry = DictionaryEntry.objects.create(entry=dictionary_entry)
+
+        bulk_create_entry_definitions = [
+            EntryDefinition(dictionary_entry=created_dictionary_entry, **entry_definition)
+            for entry_definition in entry_definitions_data
+        ]
+        created_entry_definitions = EntryDefinition.objects.bulk_create(bulk_create_entry_definitions)
+
+        return {
+            "entry": created_dictionary_entry,
+            "entry_definitions": created_entry_definitions
+        }
+
+
 class DictionarySerializer(serializers.ModelSerializer):
     entry_definitions = EntryDefinitionSerializer(many=True)
 
@@ -39,7 +64,7 @@ class DictionarySerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         entry_definitions = validated_data.pop("entry_definitions")
-        instance.show_text = validated_data.get("entry")
+        instance.entry = validated_data.get("entry")
 
         ebtry_definition_instance_list = []
         for entry_definition in entry_definitions:
